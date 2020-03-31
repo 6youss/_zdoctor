@@ -1,0 +1,13 @@
+{
+  "name": "zdoctor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Youcef ZAHARIOU",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  }
+}
