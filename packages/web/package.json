@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@types/react-native": "^0.62.0",
     "react": "^16.13.1",
     "react-art": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-native-web": "0.12.1",
-    "react-scripts": "3.4.1",
     "react-native": "0.62.0",
-    "@types/react-native": "^0.62.0"
+    "react-native-web": "0.12.1",
+    "react-scripts": "3.4.1"
   },
   "scripts": {
     "compile": "tsc -b",
