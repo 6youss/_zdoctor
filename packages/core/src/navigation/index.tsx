@@ -7,7 +7,7 @@ import { setDoctorAction } from "../redux/actions/doctorActions";
 import { setPatientAction } from "../redux/actions/patientActions";
 import NotificationHandler from "../components/NotificationHandler";
 
-export default function Routes() {
+export default function Navigation() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
   const [needAuth, setNeedAuth] = React.useState(true);

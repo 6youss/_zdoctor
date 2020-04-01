@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect, useHistory, useParams } from "react-router-dom";
 import {
   Splash,
   FindDoctor,
@@ -11,6 +11,7 @@ import {
   PatientProfile,
   DoctorAvailablities
 } from "../screens";
+import { IRoutes } from "./types";
 
 interface RouterProps {
   isLoading: boolean;
@@ -34,22 +35,49 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
           </>
         ) : userType === "patient" ? (
           <>
-            <Redirect from="*" to="/FindDoctor" />
-            <Route exact path="/FindDoctor" component={FindDoctor} />
-            <Route exact path="/ReservationCalendar" component={ReservationCalendar} />
-            <Route exact path="/PatientProfile" component={PatientProfile} />
+            <Redirect from="*" to="/patient/find-doctor" />
+            <Route exact path="/patient/find-doctor" component={FindDoctor} />
+            <Route exact path="/patient/reservation" component={ReservationCalendar} />
+            <Route exact path="/patient/profile" component={PatientProfile} />
           </>
         ) : (
           <>
-            <Redirect from="*" to="/DoctorCalendar" />
-            <Route exact path="/DoctorCalendar" component={DoctorCalendar} />
-            <Route exact path="/DoctorProfile" component={DoctorProfile} />
-            <Route exact path="/DoctorAvailablities" component={DoctorAvailablities} />
-            <Route exact path="/SessionDetail" component={SessionDetail} />
+            <Redirect from="*" to="/doctor/calendar" />
+            <Route exact path="/doctor/calendar" component={DoctorCalendar} />
+            <Route exact path="/doctor/profile" component={DoctorProfile} />
+            <Route exact path="/doctor/availablities" component={DoctorAvailablities} />
+            <Route exact path="/doctor/session/:id" component={SessionDetail} />
           </>
         )}
       </Switch>
     </BrowserRouter>
   );
 };
+
 export default Router;
+
+export const useUnifiedNavigation = () => {
+  const history = useHistory();
+  const params = useParams();
+  function goBack() {
+    history.goBack();
+  }
+  const navigate = (route: IRoutes, params?: any) => {
+    if (history) {
+      let _route: string = route;
+      if (params) {
+        for (let paramName of Object.keys(params)) {
+          _route = route.replace(":" + paramName, params[paramName]);
+        }
+      }
+      history.push(_route);
+    }
+  };
+  return {
+    navigation: null as any,
+    history,
+    params,
+    goBack,
+    navigate
+  };
+};

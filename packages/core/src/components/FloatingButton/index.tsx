@@ -1,11 +1,10 @@
 import React from "react";
 import { View } from "react-native";
-
 import { Colors } from "../../utils/values";
 import styles from "./styles";
 import { Touchable } from "..";
-import Icon from "../Icon";
 import { TouchableProps } from "../Touchable";
+import { MaterialIcons } from "../../libs/vector-icons";
 
 const FloatingButton: React.FC<TouchableProps> = ({ ...props }) => {
   const { disabled } = props;
@@ -13,7 +12,7 @@ const FloatingButton: React.FC<TouchableProps> = ({ ...props }) => {
     <View style={styles.searchButtonContainer}>
       <Touchable borderRadius={80} {...props}>
         <View style={[styles.searchButton, disabled && { backgroundColor: Colors.lightGray }]}>
-          <Icon
+          <MaterialIcons
             name="search"
             size={27}
             style={{ textAlign: "center" }}

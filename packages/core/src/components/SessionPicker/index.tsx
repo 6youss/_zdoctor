@@ -14,8 +14,9 @@ import {
   isDateInRange
 } from "../../utils/zdate";
 import Arrow from "./Arrow";
-import { IDoctor } from "../../types";
+
 import Touchable from "../Touchable";
+import { IDoctor } from "../../../../../@types";
 
 export type Hours = Array<{ id: string; time: string } | string>;
 

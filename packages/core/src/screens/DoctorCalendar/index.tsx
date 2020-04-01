@@ -7,17 +7,17 @@ import { ScreenContainer, Avatar, Touchable } from "../../components";
 import SessionPicker, { onHourPressFunction } from "../../components/SessionPicker";
 import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
-import { Colors, bigShadow } from "../../utils/values";
+import { Colors, bigShadow, isWeb } from "../../utils/values";
 import { addDays } from "../../utils/zdate";
-import { RouteComponentProps } from "react-router-dom";
+import { useUnifiedNavigation } from "../../navigation/Router";
 
-const DoctorCalendar: React.FC<RouteComponentProps> = ({ history }) => {
+const DoctorCalendar: React.FC = () => {
   const dispatch = useDispatch();
   const doctor = useSelector(doctorSelector);
   const accessToken = useSelector(tokenSelector);
   const sessions = useSelector(sessionsSelector);
   const [currentDay, setCurrentDay] = React.useState<Date>(new Date());
-
+  const { navigate } = useUnifiedNavigation();
   React.useEffect(() => {
     fetchSessions();
   }, []);
@@ -34,7 +34,11 @@ const DoctorCalendar: React.FC<RouteComponentProps> = ({ history }) => {
 
   const handleDayPress: onHourPressFunction = (day, hour) => {
     if (hour.id) {
-      history.push("/SessionDetail", { id: hour.id });
+      if (isWeb) {
+        navigate("/doctor/session/:id", { id: hour.id });
+      } else {
+        navigate("SessionDetail", { id: hour.id });
+      }
     } else {
       throw new Error("unexpected undefined session id");
     }
@@ -57,7 +61,11 @@ const DoctorCalendar: React.FC<RouteComponentProps> = ({ history }) => {
         <Touchable
           borderRadius={30}
           onPress={() => {
-            history.push("/DoctorProfile");
+            if (isWeb) {
+              navigate("/doctor/profile");
+            } else {
+              navigate("DoctorProfile");
+            }
           }}
           style={{ justifyContent: "center", alignItems: "center" }}
         >

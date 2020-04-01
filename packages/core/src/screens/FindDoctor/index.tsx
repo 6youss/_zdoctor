@@ -6,25 +6,24 @@ import styles from "./styles";
 import { fetchDoctorByPhone } from "../../api/doctor";
 import Avatar from "../../components/Avatar";
 import Loader from "../../components/Loader";
-import DoctorItem from "../../components/DoctorItem";
 import FloatingButton from "../../components/FloatingButton";
 import doctorIllustration from "../../assets/doctorIllustration.jpg";
-import { Colors } from "../../utils/values";
+import { Colors, isWeb } from "../../utils/values";
 import { doctorSelector, patientSelector } from "../../redux/selectors";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 
-import { IDoctor } from "../../types";
 import FoundDoctor from "./FoundDoctor";
-import { RouteComponentProps } from "react-router-dom";
+import { IDoctor } from "../../../../../@types";
+import { useUnifiedNavigation } from "../../navigation/Router";
 
-const FindDoctor: React.FC<RouteComponentProps> = ({ history }) => {
+const FindDoctor: React.FC = () => {
   const dispatch = useDispatch();
   const patient = useSelector(patientSelector);
 
   const [searchValue, setSearchValue] = React.useState<string>(__DEV__ ? "0781630358" : "");
   const [loading, setLoading] = React.useState<boolean>(false);
   const [foundDoctor, setFoundDoctor] = React.useState<IDoctor | undefined>(undefined);
-
+  const { navigate } = useUnifiedNavigation();
   function handleSearchValue(text: string) {
     setSearchValue(text);
     setFoundDoctor(undefined);
@@ -51,7 +50,11 @@ const FindDoctor: React.FC<RouteComponentProps> = ({ history }) => {
           <Touchable
             shadow
             onPress={() => {
-              history.push("/PatientProfile");
+              if (isWeb) {
+                navigate("/patient/profile");
+              } else {
+                navigate("PatientProfile");
+              }
             }}
           >
             <Avatar radius={70} />
@@ -79,7 +82,11 @@ const FindDoctor: React.FC<RouteComponentProps> = ({ history }) => {
           <FoundDoctor
             {...foundDoctor}
             onPress={() => {
-              history.push("/ReservationCalendar");
+              if (isWeb) {
+                navigate("/patient/reservation");
+              } else {
+                navigate("ReservationCalendar");
+              }
             }}
           />
         ) : (

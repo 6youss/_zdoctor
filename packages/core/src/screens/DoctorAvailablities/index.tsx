@@ -8,20 +8,20 @@ import { ScreenContainer, Avatar, Touchable } from "../../components";
 import SessionPicker, { onHourPressFunction } from "../../components/SessionPicker";
 import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
-import { Colors, bigShadow } from "../../utils/values";
-import { addDays, getDateFromString, addMinutes } from "../../utils/zdate";
-import { IDoctor } from "../../types";
-import { ZTime } from "../../utils/ztime";
-import { RouteComponentProps } from "react-router-dom";
+import { Colors, bigShadow, isWeb } from "../../utils/values";
+import { addDays, addMinutes } from "../../utils/zdate";
 
-const DoctorAvailablities: React.FC<RouteComponentProps> = ({ history }) => {
+import { IDoctor } from "../../../../../@types";
+import { useUnifiedNavigation } from "../../navigation/Router";
+
+const DoctorAvailablities: React.FC = () => {
   const dispatch = useDispatch();
   const doctor = useSelector(doctorSelector);
   const accessToken = useSelector(tokenSelector);
   const sessions = useSelector(sessionsSelector);
   const [currentDay, setCurrentDay] = React.useState<Date>(new Date());
   const [editedUnavailibities, setEditedUnavailibities] = React.useState<IDoctor["unavailablities"]>([]);
-
+  const { navigate } = useUnifiedNavigation();
   React.useEffect(() => {
     fetchSessions();
   }, []);
@@ -64,7 +64,11 @@ const DoctorAvailablities: React.FC<RouteComponentProps> = ({ history }) => {
         <Touchable
           borderRadius={30}
           onPress={() => {
-            history.push("/DoctorProfile");
+            if (isWeb) {
+              navigate("/doctor/profile");
+            } else {
+              navigate("DoctorProfile");
+            }
           }}
           style={{ justifyContent: "center", alignItems: "center" }}
         >

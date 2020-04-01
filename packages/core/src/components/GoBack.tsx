@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Touchable } from ".";
 import { Colors } from "../utils/values";
-import Icon from "./Icon";
+import { MaterialIcons } from "../libs/vector-icons";
 
 const GoBack: React.FC<{ color?: string; onPress: () => void }> = ({ children, onPress, color = Colors.primary }) => {
   return (
@@ -14,7 +14,7 @@ const GoBack: React.FC<{ color?: string; onPress: () => void }> = ({ children, o
       }}
     >
       <Touchable shadow onPress={onPress} borderRadius={20} style={styles.goBack}>
-        <Icon style={[styles.goBackTxt, { color }]} name="arrow-left" />
+        <MaterialIcons style={[styles.goBackTxt, { color }]} name="keyboard-arrow-left" />
       </Touchable>
       {children}
     </View>
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     alignContent: "center"
   },
   goBackTxt: {
-    fontSize: 17,
+    fontSize: 20,
     color: Colors.primary,
     textAlign: "center"
   }

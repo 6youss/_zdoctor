@@ -9,22 +9,23 @@ import { ZTime } from "../../utils/ztime";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { doctorSelector, patientSelector, tokenSelector, sessionsSelector } from "../../redux/selectors";
 import { postSession, getDoctorSessions } from "../../api/sessions";
-import { getDateFromString, addDays } from "../../utils/zdate";
+import { addDays } from "../../utils/zdate";
 import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
-import { Colors, bigShadow } from "../../utils/values";
+import { Colors, bigShadow, isWeb } from "../../utils/values";
 import GoBack from "../../components/GoBack";
 import { fetchDoctorByPhone } from "../../api/doctor";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 import { RouteComponentProps } from "react-router";
+import { useUnifiedNavigation } from "../../navigation/Router";
 
-const ReserveSession: React.FC<RouteComponentProps> = ({ history }) => {
+const ReserveSession: React.FC = () => {
   const dispatch = useDispatch();
   const patient = useSelector(patientSelector);
   const doctor = useSelector(doctorSelector, shallowEqual);
   const sessions = useSelector(sessionsSelector, shallowEqual);
   const accessToken = useSelector(tokenSelector);
   const [currentDay, setCurrentDay] = React.useState<Date>(new Date());
-
+  const { goBack, navigate } = useUnifiedNavigation();
   React.useEffect(() => {
     fetchSessions();
   }, []);
@@ -74,7 +75,7 @@ const ReserveSession: React.FC<RouteComponentProps> = ({ history }) => {
       <View style={{ marginHorizontal: 20, marginTop: 15, marginBottom: 15 }}>
         <GoBack
           onPress={() => {
-            history.goBack();
+            goBack();
           }}
         >
           <Text style={styles.headerText}>
@@ -85,7 +86,11 @@ const ReserveSession: React.FC<RouteComponentProps> = ({ history }) => {
             shadow
             borderRadius={30}
             onPress={() => {
-              history.push("/PatientProfile");
+              if (isWeb) {
+                navigate("/patient/profile");
+              } else {
+                navigate("PatientProfile");
+              }
             }}
             style={{ justifyContent: "center", alignItems: "center" }}
           >

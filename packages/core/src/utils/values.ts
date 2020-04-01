@@ -1,3 +1,10 @@
+import { Platform } from "react-native";
+
+export const isWeb = Platform.OS === "web";
+export const isAndroid = Platform.OS === "android";
+export const isiOs = Platform.OS === "ios";
+export const isNative = isiOs || isAndroid;
+
 export const Colors = {
   primary: "#81B3FA",
   primaryDark: "#0049A7",

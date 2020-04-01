@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { createStackNavigator, StackNavigationOptions } from "@react-navigation/stack";
 
 import {
@@ -12,29 +13,13 @@ import {
   PatientProfile,
   DoctorAvailablities
 } from "../screens";
-
-export type RootStackParamList = {
-  Splash: undefined;
-  Login: undefined;
-  FindDoctor: undefined;
-  PatientProfile: undefined;
-  ReservationCalendar: undefined;
-  DoctorCalendar: undefined;
-  DoctorProfile: undefined;
-  DoctorAvailablities: undefined;
-  SessionDetail: { id: string };
-};
-const Stack = createStackNavigator<RootStackParamList>();
+import { RouterProps } from "./types";
+import { IRoutes } from "./types";
+const Stack = createStackNavigator();
 
 const defaultOptions: StackNavigationOptions = {
   headerShown: false
 };
-
-interface RouterProps {
-  isLoading: boolean;
-  needAuth: boolean;
-  userType: "doctor" | "patient";
-}
 
 const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
   return (
@@ -62,3 +47,23 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
 };
 
 export default Router;
+
+export const useUnifiedNavigation = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  function goBack() {
+    navigation.goBack();
+  }
+  const navigate = (route: IRoutes, params?: any) => {
+    if (navigation) {
+      return navigation.navigate(route, params);
+    }
+  };
+  return {
+    history: null as any,
+    navigation,
+    params: route.params as any,
+    goBack,
+    navigate
+  };
+};

@@ -1,22 +1,20 @@
 import React from "react";
 import { View, Text, Alert } from "react-native";
 import styles from "./styles";
-import { RouteComponentProps } from "react-router";
 import { useSelector } from "react-redux";
 import { tokenSelector } from "../../redux/selectors";
-import { ScreenContainer, Avatar, Touchable, Button } from "../../components";
+import { ScreenContainer, Avatar, GoBack, Button } from "../../components";
 import { getSessionDetails } from "../../api/sessions";
-
-import { ISessionDetails } from "../../types";
 import { getStringFromDate } from "../../utils/zdate";
 import defaultProfile from "../../assets/defaultProfile.jpg";
 import { Colors } from "../../utils/values";
-import GoBack from "../../components/GoBack";
 
-const SessionDetail: React.FC<RouteComponentProps> = ({ history }) => {
+import { ISessionDetails } from "../../../../../@types";
+import { useUnifiedNavigation } from "../../navigation/Router";
+
+const SessionDetail: React.FC = () => {
   const accessToken = useSelector(tokenSelector);
-  const sessionId = "2";
-  // const sessionId = route.params.id;
+  const { params, goBack } = useUnifiedNavigation();
   const [sessionDetails, setSessionDetails] = React.useState<ISessionDetails | undefined>(undefined);
 
   React.useEffect(() => {
@@ -24,7 +22,7 @@ const SessionDetail: React.FC<RouteComponentProps> = ({ history }) => {
   }, []);
 
   function fetchSession() {
-    getSessionDetails(accessToken, sessionId)
+    getSessionDetails(accessToken, params.id)
       .then(sessionDetails => {
         setSessionDetails(sessionDetails);
         // Alert.alert('ahum', JSON.stringify(sessionDetails));
@@ -46,7 +44,7 @@ const SessionDetail: React.FC<RouteComponentProps> = ({ history }) => {
       <View style={styles.container}>
         <GoBack
           onPress={() => {
-            history.goBack();
+            goBack();
           }}
         />
         <Text style={styles.date}>{`Le ${date} à ${hour}`}</Text>

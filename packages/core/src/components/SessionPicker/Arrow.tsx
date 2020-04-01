@@ -2,7 +2,8 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Touchable } from "..";
 import { Colors } from "../../utils/values";
-import Icon from "../Icon";
+import { MaterialIcons } from "../../libs/vector-icons";
+
 const arrowStyles = StyleSheet.create({
   touch: {
     height: "100%",
@@ -15,12 +16,12 @@ const arrowStyles = StyleSheet.create({
 const Arrow: React.FC<{ left?: boolean; onPress: () => void }> = ({ left, onPress }) => {
   return (
     <Touchable borderRadius={0} onPress={onPress} style={arrowStyles.touch}>
-      <Icon
+      <MaterialIcons
         style={{
           fontSize: 14,
           color: Colors.darkGray
         }}
-        name={left ? "arrow-left" : "arrow-right"}
+        name={left ? "arrow-back" : "arrow-forward"}
       />
     </Touchable>
   );

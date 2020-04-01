@@ -1,7 +1,7 @@
-import {IPatient} from '../../types';
+import { IPatient } from "../../../../../@types";
 
 export enum PatientActionTypes {
-  SET_PATIENT = 'SET_PATIENT',
+  SET_PATIENT = "SET_PATIENT"
 }
 export interface PatientAction {
   type: PatientActionTypes;
@@ -11,6 +11,6 @@ export interface PatientAction {
 export function setPatientAction(patientProfile: IPatient): PatientAction {
   return {
     type: PatientActionTypes.SET_PATIENT,
-    payload: patientProfile,
+    payload: patientProfile
   };
 }

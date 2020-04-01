@@ -1,19 +1,18 @@
 import React from "react";
 import { View, Text, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { tokenSelector, patientSelector } from "../../redux/selectors";
+import { patientSelector } from "../../redux/selectors";
 import { ScreenContainer, Avatar } from "../../components";
 import { Colors, bigShadow } from "../../utils/values";
 import GoBack from "../../components/GoBack";
 import Button from "../../components/Button";
 import { signOutAction } from "../../redux/actions/userActions";
-import styles from "./styles";
-import { RouteComponentProps } from "react-router";
+import { useUnifiedNavigation } from "../../navigation/Router";
 
-const PatientProfile: React.FC<RouteComponentProps> = ({ history }) => {
+const PatientProfile: React.FC = () => {
   const dispatch = useDispatch();
   const patient = useSelector(patientSelector);
-
+  const { goBack } = useUnifiedNavigation();
   return (
     <ScreenContainer
       status={{ backgroundColor: Colors.primary, barStyle: "light-content" }}
@@ -23,7 +22,7 @@ const PatientProfile: React.FC<RouteComponentProps> = ({ history }) => {
         <GoBack
           color={Colors.white}
           onPress={() => {
-            history.goBack();
+            goBack();
           }}
         />
       </View>

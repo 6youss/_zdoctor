@@ -4,6 +4,15 @@
   "main": "index.js",
   "author": "Youcef ZAHARIOU",
   "license": "MIT",
+  "scripts": {
+    "web": "yarn workspace @zdoctor/web start",
+    "android": "yarn workspace @zdoctor/mobile android",
+    "ios": "yarn workspace zdoctor/mobile  ios",
+    "studio": "yarn workspace zdoctor/mobile studio",
+    "xcode": "yarn workspace zdoctor/mobile xcode",
+    "emulator": "emulator -avd Pixel_XL_API_29",
+    "nuke": "rm -rf node_modules packages/**/node_modules"
+  },
   "private": true,
   "workspaces": {
     "packages": [

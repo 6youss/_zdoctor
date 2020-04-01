@@ -4,18 +4,16 @@ import styles from "./styles";
 import { useSelector, useDispatch } from "react-redux";
 import { doctorSelector } from "../../redux/selectors";
 import { ScreenContainer, Avatar } from "../../components";
-import { Colors } from "../../utils/values";
+import { Colors, isWeb } from "../../utils/values";
 import GoBack from "../../components/GoBack";
-import { screenWidth } from "../../utils/dimentions";
 import Button from "../../components/Button";
 import { signOutAction } from "../../redux/actions/userActions";
+import { useUnifiedNavigation } from "../../navigation/Router";
 
-import { RouteComponentProps } from "react-router-dom";
-
-const DoctorProfile: React.FC<RouteComponentProps> = ({ history }) => {
+const DoctorProfile: React.FC = () => {
   const dispatch = useDispatch();
   const doctor = useSelector(doctorSelector);
-
+  const { navigate, goBack } = useUnifiedNavigation();
   return (
     <ScreenContainer
       status={{ backgroundColor: Colors.primary, barStyle: "light-content" }}
@@ -25,7 +23,7 @@ const DoctorProfile: React.FC<RouteComponentProps> = ({ history }) => {
         <GoBack
           color={Colors.white}
           onPress={() => {
-            history.goBack();
+            goBack();
           }}
         />
       </View>
@@ -63,7 +61,11 @@ const DoctorProfile: React.FC<RouteComponentProps> = ({ history }) => {
             text="Disponibilités"
             style={{ marginBottom: 20 }}
             onPress={() => {
-              history.push("DoctorAvailablities");
+              if (isWeb) {
+                navigate("/doctor/availablities");
+              } else {
+                navigate("DoctorAvailablities");
+              }
             }}
           />
           <Button
