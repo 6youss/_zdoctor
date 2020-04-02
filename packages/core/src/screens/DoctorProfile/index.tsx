@@ -8,7 +8,7 @@ import { Colors, isWeb } from "../../utils/values";
 import GoBack from "../../components/GoBack";
 import Button from "../../components/Button";
 import { signOutAction } from "../../redux/actions/userActions";
-import { useUnifiedNavigation } from "../../navigation/Router";
+import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 
 const DoctorProfile: React.FC = () => {
   const dispatch = useDispatch();

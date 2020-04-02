@@ -4,8 +4,8 @@ export interface IUser {
   id: string;
   username: string;
   userType: "patient" | "doctor";
-  accessToken: string | undefined;
-  refreshToken: string | undefined;
+  accessToken?: string;
+  refreshToken?: string;
 }
 export interface IDoctor {
   _id: string;

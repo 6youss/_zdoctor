@@ -1,10 +1,10 @@
 import React from "react";
-import { TouchableOpacity, TouchableOpacityProps, ViewStyle } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps, ViewStyle, StyleProp } from "react-native";
 import { smallShadow } from "../utils/values";
 
 export type TouchableProps = TouchableOpacityProps & {
   borderRadius?: number;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   shadow?: boolean;
 };
 

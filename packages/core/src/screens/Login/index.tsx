@@ -1,13 +1,16 @@
 import React from "react";
 import { View, Image, Alert } from "react-native";
-import { postLogin } from "../../api/user";
-import { useDispatch } from "react-redux";
+import { postLogin, getUser } from "../../api/user";
+import { useDispatch, useSelector } from "react-redux";
 import { signInAction } from "../../redux/actions/userActions";
 import { ScreenContainer, Input } from "../../components";
 import Button from "../../components/Button";
 import logoWhite from "../../assets/logoWhite.png";
 import { Colors } from "../../utils/values";
 import styles from "./styles";
+import { userTypeSelector } from "../../redux/selectors";
+import { setDoctorAction } from "../../redux/actions/doctorActions";
+import { setPatientAction } from "../../redux/actions/patientActions";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,8 +22,15 @@ const Login: React.FC = () => {
   function login() {
     setLoading(true);
     postLogin(username, password).then(
-      user => {
+      async user => {
+        const userProfile = await getUser(user.accessToken ?? "");
+        if (user.userType === "doctor") {
+          dispatch(setDoctorAction(userProfile.doctor));
+        } else {
+          dispatch(setPatientAction(userProfile.patient));
+        }
         dispatch(signInAction(user));
+        setLoading(false);
       },
       error => {
         Alert.alert("Oops!", error.message);

@@ -15,8 +15,7 @@ import { Colors, bigShadow, isWeb } from "../../utils/values";
 import GoBack from "../../components/GoBack";
 import { fetchDoctorByPhone } from "../../api/doctor";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
-import { RouteComponentProps } from "react-router";
-import { useUnifiedNavigation } from "../../navigation/Router";
+import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 
 const ReserveSession: React.FC = () => {
   const dispatch = useDispatch();
@@ -83,7 +82,6 @@ const ReserveSession: React.FC = () => {
             {`Pr. ${doctor.firstName} ${doctor.lastName}`}
           </Text>
           <Touchable
-            shadow
             borderRadius={30}
             onPress={() => {
               if (isWeb) {

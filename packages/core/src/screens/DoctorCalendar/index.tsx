@@ -9,7 +9,7 @@ import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsAct
 import { getDoctorSessions } from "../../api/sessions";
 import { Colors, bigShadow, isWeb } from "../../utils/values";
 import { addDays } from "../../utils/zdate";
-import { useUnifiedNavigation } from "../../navigation/Router";
+import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 
 const DoctorCalendar: React.FC = () => {
   const dispatch = useDispatch();

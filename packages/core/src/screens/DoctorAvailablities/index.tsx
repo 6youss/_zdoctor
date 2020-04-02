@@ -12,7 +12,7 @@ import { Colors, bigShadow, isWeb } from "../../utils/values";
 import { addDays, addMinutes } from "../../utils/zdate";
 
 import { IDoctor } from "../../../../../@types";
-import { useUnifiedNavigation } from "../../navigation/Router";
+import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 
 const DoctorAvailablities: React.FC = () => {
   const dispatch = useDispatch();

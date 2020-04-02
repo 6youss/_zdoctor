@@ -7,7 +7,7 @@ import { Colors, bigShadow } from "../../utils/values";
 import GoBack from "../../components/GoBack";
 import Button from "../../components/Button";
 import { signOutAction } from "../../redux/actions/userActions";
-import { useUnifiedNavigation } from "../../navigation/Router";
+import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 
 const PatientProfile: React.FC = () => {
   const dispatch = useDispatch();

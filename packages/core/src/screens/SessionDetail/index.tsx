@@ -8,9 +8,8 @@ import { getSessionDetails } from "../../api/sessions";
 import { getStringFromDate } from "../../utils/zdate";
 import defaultProfile from "../../assets/defaultProfile.jpg";
 import { Colors } from "../../utils/values";
-
 import { ISessionDetails } from "../../../../../@types";
-import { useUnifiedNavigation } from "../../navigation/Router";
+import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 
 const SessionDetail: React.FC = () => {
   const accessToken = useSelector(tokenSelector);

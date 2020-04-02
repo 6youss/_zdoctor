@@ -14,7 +14,7 @@ import { setDoctorAction } from "../../redux/actions/doctorActions";
 
 import FoundDoctor from "./FoundDoctor";
 import { IDoctor } from "../../../../../@types";
-import { useUnifiedNavigation } from "../../navigation/Router";
+import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 
 const FindDoctor: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,7 +48,6 @@ const FindDoctor: React.FC = () => {
       <View style={styles.container}>
         <View style={styles.searchContainer}>
           <Touchable
-            shadow
             onPress={() => {
               if (isWeb) {
                 navigate("/patient/profile");

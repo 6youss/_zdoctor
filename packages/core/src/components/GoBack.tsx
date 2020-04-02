@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Touchable } from ".";
+import Touchable from "./Touchable";
 import { Colors } from "../utils/values";
 import { MaterialIcons } from "../libs/vector-icons";
 
@@ -13,7 +13,7 @@ const GoBack: React.FC<{ color?: string; onPress: () => void }> = ({ children, o
         justifyContent: "space-between"
       }}
     >
-      <Touchable shadow onPress={onPress} borderRadius={20} style={styles.goBack}>
+      <Touchable onPress={onPress} borderRadius={20} style={styles.goBack}>
         <MaterialIcons style={[styles.goBackTxt, { color }]} name="keyboard-arrow-left" />
       </Touchable>
       {children}

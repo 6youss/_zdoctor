@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect, useHistory, useParams } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import {
   Splash,
   FindDoctor,
@@ -11,7 +11,6 @@ import {
   PatientProfile,
   DoctorAvailablities
 } from "../screens";
-import { IRoutes } from "./types";
 
 interface RouterProps {
   isLoading: boolean;
@@ -55,29 +54,3 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
 };
 
 export default Router;
-
-export const useUnifiedNavigation = () => {
-  const history = useHistory();
-  const params = useParams();
-  function goBack() {
-    history.goBack();
-  }
-  const navigate = (route: IRoutes, params?: any) => {
-    if (history) {
-      let _route: string = route;
-      if (params) {
-        for (let paramName of Object.keys(params)) {
-          _route = route.replace(":" + paramName, params[paramName]);
-        }
-      }
-      history.push(_route);
-    }
-  };
-  return {
-    navigation: null as any,
-    history,
-    params,
-    goBack,
-    navigate
-  };
-};

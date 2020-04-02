@@ -14,6 +14,7 @@ function reducer(prevState: IPatient = initState, action: PatientAction): IPatie
         ...prevState,
         ...action.payload
       };
+
     default:
       return prevState;
   }

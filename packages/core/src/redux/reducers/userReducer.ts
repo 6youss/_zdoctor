@@ -2,8 +2,8 @@ import { UserAction } from "../actions/userActions";
 import { IUser } from "../../../../../@types";
 
 const initState: IUser = {
-  id: "khkh",
-  username: "patient",
+  id: "default",
+  username: "default",
   userType: "patient",
   accessToken: undefined,
   refreshToken: undefined
