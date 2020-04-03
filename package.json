@@ -14,6 +14,9 @@
     "emulator": "emulator -avd Pixel_XL_API_29",
     "nuke": "rm -rf node_modules packages/**/node_modules"
   },
+  "dependencies": {
+    "express": "4.17.1"
+  },
   "private": true,
   "workspaces": {
     "packages": [
