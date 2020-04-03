@@ -19,11 +19,11 @@ const PORT = process.env.PORT || 5000;
 //   })
 // );
 
-app.use(express.static(path.join(__dirname, "packages/web/build")));
+app.use(express.static(path.join(__dirname, ".")));
 
 // https://facebook.github.io/create-react-app/docs/deployment#serving-apps-with-client-side-routing
 app.get("*", function(req, res) {
-  res.sendFile(path.join(__dirname, "packages/web/build", "index.html"));
+  res.sendFile(path.join(__dirname, ".", "index.html"));
 });
 
 app.listen(PORT, () => console.log(`Listening on :${PORT}`));
