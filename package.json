@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "web": "yarn workspace @zdoctor/web start",
+    "web:build": "yarn workspace @zdoctor/web build",
     "android": "yarn workspace @zdoctor/mobile android",
     "ios": "yarn workspace zdoctor/mobile  ios",
     "studio": "yarn workspace zdoctor/mobile studio",
