@@ -10,6 +10,7 @@ import { getDoctorSessions } from "../../api/sessions";
 import { Colors, bigShadow, isWeb } from "../../utils/values";
 import { addDays } from "../../utils/zdate";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
+import { useAlert } from "../../components/Alert";
 
 const DoctorCalendar: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,17 +19,18 @@ const DoctorCalendar: React.FC = () => {
   const sessions = useSelector(sessionsSelector);
   const [currentDay, setCurrentDay] = React.useState<Date>(new Date());
   const { navigate } = useUnifiedNavigation();
+  const alert = useAlert();
   React.useEffect(() => {
     fetchSessions();
   }, []);
 
   function fetchSessions() {
     getDoctorSessions(accessToken, doctor._id)
-      .then(sessions => {
+      .then((sessions) => {
         dispatch(setSearchedDoctorSessionsAction(sessions));
       })
-      .catch(error => {
-        Alert.alert("Oops!", error.message);
+      .catch((error) => {
+        alert("Oops!", error.message);
       });
   }
 
@@ -77,7 +79,7 @@ const DoctorCalendar: React.FC = () => {
         style={{
           flexGrow: 1,
           marginHorizontal: 20,
-          ...bigShadow
+          ...bigShadow,
         }}
       >
         <View style={[styles.sessionPickerContainer, { elevation: bigShadow.elevation }]}>

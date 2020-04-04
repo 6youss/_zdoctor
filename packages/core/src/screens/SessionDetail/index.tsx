@@ -10,24 +10,25 @@ import defaultProfile from "../../assets/defaultProfile.jpg";
 import { Colors } from "../../utils/values";
 import { ISessionDetails } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
+import { useAlert } from "../../components/Alert";
 
 const SessionDetail: React.FC = () => {
   const accessToken = useSelector(tokenSelector);
   const { params, goBack } = useUnifiedNavigation();
   const [sessionDetails, setSessionDetails] = React.useState<ISessionDetails | undefined>(undefined);
-
+  const alert = useAlert();
   React.useEffect(() => {
     fetchSession();
   }, []);
 
   function fetchSession() {
     getSessionDetails(accessToken, params.id)
-      .then(sessionDetails => {
+      .then((sessionDetails) => {
         setSessionDetails(sessionDetails);
-        // Alert.alert('ahum', JSON.stringify(sessionDetails));
+        alert("ahum", JSON.stringify(sessionDetails));
       })
-      .catch(error => {
-        Alert.alert("Oops!", error.message);
+      .catch((error) => {
+        alert("Oops!", error.message);
       });
   }
 

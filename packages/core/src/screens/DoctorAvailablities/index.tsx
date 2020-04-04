@@ -13,6 +13,7 @@ import { addDays, addMinutes } from "../../utils/zdate";
 
 import { IDoctor } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
+import { useAlert } from "../../components/Alert";
 
 const DoctorAvailablities: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,25 +23,26 @@ const DoctorAvailablities: React.FC = () => {
   const [currentDay, setCurrentDay] = React.useState<Date>(new Date());
   const [editedUnavailibities, setEditedUnavailibities] = React.useState<IDoctor["unavailablities"]>([]);
   const { navigate } = useUnifiedNavigation();
+  const alert = useAlert();
   React.useEffect(() => {
     fetchSessions();
   }, []);
 
   function fetchSessions() {
     getDoctorSessions(accessToken, doctor._id)
-      .then(sessions => {
+      .then((sessions) => {
         dispatch(setSearchedDoctorSessionsAction(sessions));
       })
-      .catch(error => {
-        Alert.alert("Oops!", error.message);
+      .catch((error) => {
+        alert("Oops!", error.message);
       });
   }
 
-  const handleHourPress: onHourPressFunction = date => {
+  const handleHourPress: onHourPressFunction = (date) => {
     let newEditedUnavailibities = [...editedUnavailibities];
     newEditedUnavailibities.push({
       from: date,
-      to: addMinutes(date, 29)
+      to: addMinutes(date, 29),
     });
     setEditedUnavailibities(newEditedUnavailibities);
   };
@@ -80,7 +82,7 @@ const DoctorAvailablities: React.FC = () => {
         style={{
           flexGrow: 1,
           marginHorizontal: 20,
-          ...bigShadow
+          ...bigShadow,
         }}
       >
         <View style={[styles.sessionPickerContainer, { elevation: bigShadow.elevation }]}>

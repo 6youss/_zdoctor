@@ -1,20 +1,20 @@
 import React from "react";
 import { View, Image, Alert } from "react-native";
 import { postLogin, getUser } from "../../api/user";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signInAction } from "../../redux/actions/userActions";
 import { ScreenContainer, Input } from "../../components";
 import Button from "../../components/Button";
 import logoWhite from "../../assets/logoWhite.png";
 import { Colors } from "../../utils/values";
 import styles from "./styles";
-import { userTypeSelector } from "../../redux/selectors";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 import { setPatientAction } from "../../redux/actions/patientActions";
+import { useAlert } from "../../components/Alert";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
-
+  const alert = useAlert();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [username, setUsername] = React.useState<string>(__DEV__ ? (true ? "doctor" : "patient") : "");
   const [password, setPassword] = React.useState<string>(__DEV__ ? "123456" : "");
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
   function login() {
     setLoading(true);
     postLogin(username, password).then(
-      async user => {
+      async (user) => {
         const userProfile = await getUser(user.accessToken ?? "");
         if (user.userType === "doctor") {
           dispatch(setDoctorAction(userProfile.doctor));
@@ -32,8 +32,8 @@ const Login: React.FC = () => {
         dispatch(signInAction(user));
         setLoading(false);
       },
-      error => {
-        Alert.alert("Oops!", error.message);
+      (error) => {
+        alert("Oops!", error.message);
         setLoading(false);
       }
     );
@@ -49,7 +49,7 @@ const Login: React.FC = () => {
 
           <Input
             value={username}
-            onChangeText={text => {
+            onChangeText={(text) => {
               setUsername(text);
             }}
             style={styles.loginInput}
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
           />
           <Input
             value={password}
-            onChangeText={text => {
+            onChangeText={(text) => {
               setPassword(text);
             }}
             style={[styles.loginInput, { marginBottom: 40 }]}

@@ -16,6 +16,7 @@ import GoBack from "../../components/GoBack";
 import { fetchDoctorByPhone } from "../../api/doctor";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
+import { useAlert } from "../../components/Alert";
 
 const ReserveSession: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const ReserveSession: React.FC = () => {
   const accessToken = useSelector(tokenSelector);
   const [currentDay, setCurrentDay] = React.useState<Date>(new Date());
   const { goBack, navigate } = useUnifiedNavigation();
+  const alert = useAlert();
   React.useEffect(() => {
     fetchSessions();
   }, []);
@@ -36,7 +38,7 @@ const ReserveSession: React.FC = () => {
       const doctorDetails = await fetchDoctorByPhone(doctor.phone);
       dispatch(setDoctorAction(doctorDetails));
     } catch (error) {
-      Alert.alert("Oops!", error.message);
+      alert("Oops!", error.message);
     }
   }
 
@@ -48,21 +50,21 @@ const ReserveSession: React.FC = () => {
   }
 
   function handleHourPress(date: Date, time: ZTime) {
-    Alert.alert("Prendre rendez vous", `Confirmer la prise du rendez-vous le ${date} à ${time.toString()} ?`, [
+    alert("Prendre rendez vous", `Confirmer la prise du rendez-vous le ${date} à ${time.toString()} ?`, [
       {
         text: "Confirmer",
         onPress: () => {
           postSession(accessToken, patient._id, doctor._id, date)
-            .then(session => {
+            .then((session) => {
               fetchSessions();
-              Alert.alert("Success", `session prise avec succes`);
+              alert("Success", `session prise avec succes`);
             })
-            .catch(error => {
-              Alert.alert("Oops!", error.message);
+            .catch((error) => {
+              alert("Oops!", error.message);
             });
-        }
+        },
       },
-      { text: "Annuler" }
+      { text: "Annuler" },
     ]);
   }
 
@@ -100,7 +102,7 @@ const ReserveSession: React.FC = () => {
         style={{
           flexGrow: 1,
           marginHorizontal: 20,
-          ...bigShadow
+          ...bigShadow,
         }}
       >
         <View style={[styles.pickerContainer, { elevation: bigShadow.elevation }]}>

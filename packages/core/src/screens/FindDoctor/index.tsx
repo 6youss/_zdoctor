@@ -15,6 +15,7 @@ import { setDoctorAction } from "../../redux/actions/doctorActions";
 import FoundDoctor from "./FoundDoctor";
 import { IDoctor } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
+import { useAlert } from "../../components/Alert";
 
 const FindDoctor: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const FindDoctor: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [foundDoctor, setFoundDoctor] = React.useState<IDoctor | undefined>(undefined);
   const { navigate } = useUnifiedNavigation();
+  const alert = useAlert();
   function handleSearchValue(text: string) {
     setSearchValue(text);
     setFoundDoctor(undefined);
@@ -38,7 +40,7 @@ const FindDoctor: React.FC = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      Alert.alert("Oops!", "Vérifier le numéro de téléphone et que vous êtes bien connecté à internet");
+      alert("Oops!", "Vérifier le numéro de téléphone et que vous êtes bien connecté à internet");
       console.log(error);
     }
   }
@@ -97,7 +99,7 @@ const FindDoctor: React.FC = () => {
                   style={{
                     textAlign: "center",
                     fontSize: 15,
-                    color: Colors.darkGray
+                    color: Colors.darkGray,
                   }}
                 >
                   Trouvez votre médecin
