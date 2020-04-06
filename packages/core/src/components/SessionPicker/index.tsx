@@ -4,7 +4,7 @@ import { ZTime } from "../../utils/ztime";
 import styles, { dayColStyles } from "./styles";
 
 import DayColumn from "./DayColumn";
-import { Colors } from "../../utils/values";
+import { Colors, isWeb } from "../../utils/values";
 import {
   getDayName,
   getMonthName,
@@ -29,14 +29,14 @@ export type ZTimes = Array<ZTime>;
 export interface ZSessions {
   [date: string]: ZTimes;
 }
-
+export type dayCounts = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export type onHourPressFunction = (dayTime: Date, hour: ZTime) => void;
 export type onDayPressFunction = (day: Date) => void;
 
 export interface SessionPickerProps {
   filterMode: "taken" | "available" | "both";
   currentDate?: Date;
-  dayCount?: 1 | 2 | 3 | 4 | 5;
+  dayCount?: dayCounts;
   defaultStartingHour?: ZTime;
   defaultEndingHour?: ZTime;
   defaultSessionDuration?: number;
@@ -68,6 +68,10 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
   onArrowRightPress = () => {},
   onArrowLeftPress = () => {},
 }) => {
+  if (!dayCount) {
+    let defaultDayCount: dayCounts = isWeb ? 7 : 3;
+    dayCount = defaultDayCount;
+  }
   const dayColumnWidth = 80 / dayCount;
   const shownDatesRange = dateRange(currentDate, dayCount - 1);
   let filteredHours: ZSessions = {};
@@ -215,7 +219,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
     <View style={styles.container}>
       <DaysHeader />
       <ScrollView
-        style={{ flex: 1 }}
+        style={[{ flexGrow: 1 }, isWeb && { height: 1 }]}
         refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
         contentContainerStyle={styles.hoursContainer}
       >
