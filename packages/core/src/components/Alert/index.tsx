@@ -1,8 +1,7 @@
 import React from "react";
 import { View, Text, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
-
-import { Colors, mediumShadow } from "../../utils/values";
 import styles from "./styles";
+import { screenWidth, screenHeight } from "../../utils/dimentions";
 
 interface Option {
   text: string;
@@ -33,7 +32,7 @@ export const AlertProvider: React.FC = ({ children }) => {
             setVisible(false);
           }}
         >
-          <View style={styles.alertContainer}>
+          <View style={[styles.alertContainer, { width: screenWidth(100), height: screenHeight(100) }]}>
             <TouchableWithoutFeedback>
               <View style={styles.alertTextContainer}>
                 <Text style={styles.title}>{title}</Text>

@@ -12,9 +12,9 @@ export async function postSession(
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ patientId, doctorId, date: date.toISOString() })
+    body: JSON.stringify({ patientId, doctorId, date: date.toISOString() }),
   });
   if (res.ok) {
     return (await res.json()).session;
@@ -23,12 +23,12 @@ export async function postSession(
 }
 
 export async function getDoctorSessions(accessToken: string | undefined, doctorId: string): Promise<Array<ISession>> {
-  console.log("getting sessions", doctorId);
+  //console.log("getting sessions", doctorId);
   const res = await fetch(`${BASE_URL}/sessions/doctor/${doctorId}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   });
   if (res.ok) {
     return (await res.json()).sessions;
@@ -40,8 +40,8 @@ export async function getSessionDetails(accessToken: string | undefined, session
   const res = await fetch(`${BASE_URL}/sessions/${sessionId}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   });
   if (res.ok) {
     return (await res.json()).session;

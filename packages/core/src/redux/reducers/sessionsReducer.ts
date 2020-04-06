@@ -10,7 +10,7 @@ function reducer(prevState: Sessions = initState, action: SessionsAction): Sessi
     case "SET_SEARCHED_DOCTOR_SESSIONS": {
       return {
         ...prevState,
-        ...sessionsArrayToMap(action.payload)
+        ...sessionsArrayToMap(action.payload),
       };
     }
     default:
@@ -22,7 +22,7 @@ function sessionsArrayToMap(sessionsArray: Array<ISession>): Sessions {
   let sessionsMap: Sessions = {};
   for (let session of sessionsArray) {
     const date = getStringFromDate(new Date(session.date), true);
-
+    console.log({ date, serverdate: new Date(session.date) });
     const [dateString, timeString] = date.split("T");
 
     if (!sessionsMap[dateString]) {

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { ZHours, onHourPressFunction, SessionPickerProps } from ".";
+import { ZTimes, onHourPressFunction, SessionPickerProps } from ".";
 import { dayColStyles } from "./styles";
 import Touchable from "../Touchable";
 import { ZTime } from "../../utils/ztime";
@@ -9,7 +9,7 @@ import { getDateFromString } from "../../utils/zdate";
 interface DayColumnProps {
   filterMode: SessionPickerProps["filterMode"];
   day: string;
-  hours: ZHours;
+  hours: ZTimes;
   width: number;
   onHourPress?: onHourPressFunction;
 }
@@ -31,7 +31,7 @@ const DayColumn: React.FC<DayColumnProps> = ({ day, hours, width, onHourPress = 
               { width: "90%", height: 70, marginVertical: 5 },
               dayColStyles.hour,
               isHourTaken && dayColStyles.takenHour,
-              hour.unavailable && { opacity: 0.3 }
+              hour.unavailable && { opacity: 0.3 },
             ]}
             borderRadius={8}
           >

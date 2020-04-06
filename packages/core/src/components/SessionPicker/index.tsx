@@ -4,7 +4,7 @@ import { ZTime } from "../../utils/ztime";
 import styles, { dayColStyles } from "./styles";
 
 import DayColumn from "./DayColumn";
-import { Colors, isWeb } from "../../utils/values";
+import { Colors } from "../../utils/values";
 import {
   getDayName,
   getMonthName,
@@ -24,19 +24,19 @@ export interface Sessions {
   [date: string]: Hours;
 }
 
-export type ZHours = Array<ZTime>;
+export type ZTimes = Array<ZTime>;
 
 export interface ZSessions {
-  [date: string]: ZHours;
+  [date: string]: ZTimes;
 }
 
 export type onHourPressFunction = (dayTime: Date, hour: ZTime) => void;
 export type onDayPressFunction = (day: Date) => void;
-export type dayCounts = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
 export interface SessionPickerProps {
   filterMode: "taken" | "available" | "both";
   currentDate?: Date;
-  dayCount?: dayCounts;
+  dayCount?: 1 | 2 | 3 | 4 | 5;
   defaultStartingHour?: ZTime;
   defaultEndingHour?: ZTime;
   defaultSessionDuration?: number;
@@ -54,7 +54,7 @@ export interface SessionPickerProps {
 const SessionPicker: React.FC<SessionPickerProps> = ({
   filterMode,
   currentDate = new Date(),
-  dayCount,
+  dayCount = 3,
   defaultStartingHour = ZTime.fromString("08:00"),
   defaultEndingHour = ZTime.fromString("17:00"),
   defaultSessionDuration = 30,
@@ -68,10 +68,6 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
   onArrowRightPress = () => {},
   onArrowLeftPress = () => {},
 }) => {
-  if (!dayCount) {
-    let defaultDayCount: dayCounts = isWeb ? 7 : 3;
-    dayCount = defaultDayCount;
-  }
   const dayColumnWidth = 80 / dayCount;
   const shownDatesRange = dateRange(currentDate, dayCount - 1);
   let filteredHours: ZSessions = {};
@@ -149,7 +145,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
       switch (filterMode) {
         case "available": {
           if (!_hour.unavailable && !_hour.id) {
-            console.log(_hour);
+            //console.log(_hour);
             filteredHours.push(_hour);
           }
           break;
@@ -219,7 +215,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
     <View style={styles.container}>
       <DaysHeader />
       <ScrollView
-        style={[{ flexGrow: 1 }, isWeb && { height: 1 }]}
+        style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
         contentContainerStyle={styles.hoursContainer}
       >
