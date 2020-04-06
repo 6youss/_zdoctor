@@ -22,7 +22,7 @@ function sessionsArrayToMap(sessionsArray: Array<ISession>): Sessions {
   let sessionsMap: Sessions = {};
   for (let session of sessionsArray) {
     const date = getStringFromDate(new Date(session.date), true);
-    console.log({ date, serverdate: new Date(session.date) });
+    console.log({ date, serverdate: new Date(session.date).toISOString() });
     const [dateString, timeString] = date.split("T");
 
     if (!sessionsMap[dateString]) {
