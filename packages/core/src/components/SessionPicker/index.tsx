@@ -5,40 +5,31 @@ import styles, { dayColStyles } from "./styles";
 
 import DayColumn from "./DayColumn";
 import { Colors, isWeb } from "../../utils/values";
-import {
-  getDayName,
-  getMonthName,
-  getDateFromString,
-  getStringFromDate,
-  dateRange,
-  isDateInRange,
-} from "../../utils/zdate";
+import { getDayName, getMonthName, dateRange, isDateInRange } from "../../utils/zdate";
 import Arrow from "./Arrow";
 
 import Touchable from "../Touchable";
-import { IDoctor } from "../../../../../@types";
+import { IDoctor, ISession } from "../../../../../@types";
 
 export type Hours = Array<{ id: string; time: string } | string>;
 
-export interface Sessions {
-  [date: string]: Hours;
+export type Sessions = Array<ISession>;
+
+export type ZSessions = Array<ZTime>;
+export interface ZSessionsMap {
+  [date: string]: ZSessions;
 }
 
-export type ZTimes = Array<ZTime>;
-
-export interface ZSessions {
-  [date: string]: ZTimes;
-}
 export type dayCounts = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-export type onHourPressFunction = (dayTime: Date, hour: ZTime) => void;
+export type onHourPressFunction = (hour: ZTime) => void;
 export type onDayPressFunction = (day: Date) => void;
 
 export interface SessionPickerProps {
   filterMode: "taken" | "available" | "both";
   currentDate?: Date;
   dayCount?: dayCounts;
-  defaultStartingHour?: ZTime;
-  defaultEndingHour?: ZTime;
+  defaultStartingHour?: number;
+  defaultEndingHour?: number;
   defaultSessionDuration?: number;
   workingHours?: IDoctor["workingHours"];
   sessionDurations?: IDoctor["sessionDurations"];
@@ -54,54 +45,44 @@ export interface SessionPickerProps {
 const SessionPicker: React.FC<SessionPickerProps> = ({
   filterMode,
   currentDate = new Date(),
-  dayCount = 3,
-  defaultStartingHour = ZTime.fromString("08:00"),
-  defaultEndingHour = ZTime.fromString("17:00"),
+  dayCount = isWeb ? 7 : 3,
+  defaultStartingHour = ZTime.timeStringToMinutes("08:00"),
+  defaultEndingHour = ZTime.timeStringToMinutes("17:00"),
   defaultSessionDuration = 30,
   workingHours = [],
   unavailablitites = [],
   sessionDurations = [],
-  allreadyTakenHours = {},
+  allreadyTakenHours = [],
   onHourPress = () => {},
   onDayPress = () => {},
   onRefresh = () => {},
   onArrowRightPress = () => {},
   onArrowLeftPress = () => {},
 }) => {
-  if (!dayCount) {
-    let defaultDayCount: dayCounts = isWeb ? 7 : 3;
-    dayCount = defaultDayCount;
-  }
   const dayColumnWidth = 80 / dayCount;
   const shownDatesRange = dateRange(currentDate, dayCount - 1);
-  let filteredHours: ZSessions = {};
 
-  //allredyTakenHours formated to use ZTime type
-  let __allredyTakenHours: ZSessions = {};
-  for (let date of shownDatesRange) {
-    const dateStr = getStringFromDate(date, false);
-    __allredyTakenHours[dateStr] = [];
-    if (allreadyTakenHours[dateStr]) {
-      __allredyTakenHours[dateStr] = allreadyTakenHours[dateStr].map((hour) => {
-        if (typeof hour === "string") {
-          return ZTime.fromString(hour);
-        } else {
-          return ZTime.fromString(hour.time, hour.id);
-        }
-      });
-    }
-    filteredHours[dateStr] = filterHours(dateStr);
+  let filteredHours: ZSessionsMap = {};
+  let __allredyTakenHours: ZSessionsMap = {};
+
+  for (let shownDate of shownDatesRange) {
+    let [dateKey] = shownDate.toISOString().split("T");
+    __allredyTakenHours[dateKey] = allreadyTakenHours
+      .filter((session) => dateKey === session.date.split("T")[0])
+      .map((session) => new ZTime(session.date, session._id));
+
+    filteredHours[dateKey] = filterHours(dateKey);
   }
 
-  function getWorkHours(date: Date): { startingHour: ZTime; endingHour: ZTime } {
+  function getWorkHours(date: Date): { startingHour: number; endingHour: number } {
     let range = {
       startingHour: defaultStartingHour,
       endingHour: defaultEndingHour,
     };
     for (let wh of workingHours) {
       if (isDateInRange(date, wh.from, wh.to)) {
-        range.startingHour = ZTime.fromMinutes(wh.opensAt);
-        range.endingHour = ZTime.fromMinutes(wh.closesAt);
+        range.startingHour = wh.opensAt;
+        range.endingHour = wh.closesAt;
       }
     }
     return range;
@@ -118,20 +99,20 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
   }
 
   function filterHours(sessionDateKey: string): Array<ZTime> {
-    let allreadyTakenHours = __allredyTakenHours[sessionDateKey];
-    const sessionDate = getDateFromString(sessionDateKey);
-
+    let dateAllreadyTakenHours = __allredyTakenHours[sessionDateKey];
+    const sessionDate = new Date(sessionDateKey);
     let { startingHour, endingHour } = getWorkHours(sessionDate);
-
     let sessionDuration = getSessionDuration(sessionDate);
     let filteredHours: Array<ZTime> = [];
 
-    let _hour = startingHour.copy();
+    let _hour: ZTime = new ZTime(new Date(sessionDate.setUTCHours(startingHour / 60, startingHour % 60)).toISOString());
 
-    while (_hour.isLess(endingHour) && endingHour.toMinutes() - _hour.toMinutes() >= sessionDuration) {
+    // console.log(_hour, sessionDateKey);
+
+    while (_hour.toMinutes() < endingHour && endingHour - _hour.toMinutes() >= sessionDuration) {
       let isUnavailableHour = false;
       for (let unavailablity of unavailablitites) {
-        const sessionDateWithTime = new Date(sessionDate.setHours(_hour.hours, _hour.minutes, 0, 0));
+        const sessionDateWithTime = new Date(sessionDate.setUTCHours(_hour.hours, _hour.minutes, 0, 0));
         if (isDateInRange(sessionDateWithTime, unavailablity.from, unavailablity.to, false)) {
           isUnavailableHour = true;
           break;
@@ -141,7 +122,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
         _hour.unavailable = true;
       }
 
-      const takenHour = allreadyTakenHours.find((hour) => hour.equals(_hour));
+      const takenHour = dateAllreadyTakenHours.find((hour) => hour.equals(_hour));
       if (takenHour) {
         _hour.id = takenHour.id;
       }
@@ -166,6 +147,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
 
       _hour = _hour.addDuration(sessionDuration);
     }
+
     return filteredHours;
   }
 
@@ -186,7 +168,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
           left
         />
         {Object.keys(filteredHours).map((dateKey) => {
-          const date = getDateFromString(dateKey);
+          const date = new Date(dateKey);
           const emptyDay = filteredHours[dateKey].length === 0;
           return (
             <Touchable
@@ -214,7 +196,6 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
       </View>
     );
   };
-
   return (
     <View style={styles.container}>
       <DaysHeader />
@@ -224,7 +205,6 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
         contentContainerStyle={styles.hoursContainer}
       >
         {Object.keys(filteredHours).map((date) => {
-          // console.log(filteredHours[date]);
           return (
             <DayColumn
               filterMode={filterMode}

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { tokenSelector } from "../../redux/selectors";
 import { ScreenContainer, Avatar, GoBack, Button } from "../../components";
 import { getSessionDetails } from "../../api/sessions";
-import { getStringFromDate } from "../../utils/zdate";
+
 import defaultProfile from "../../assets/defaultProfile.jpg";
 import { Colors } from "../../utils/values";
 import { ISessionDetails } from "../../../../../@types";
@@ -34,8 +34,6 @@ const SessionDetail: React.FC = () => {
 
   if (!sessionDetails) return null;
 
-  const [date, hour] = getStringFromDate(new Date(sessionDetails.date), true).split("T");
-
   return (
     <ScreenContainer
       status={{ backgroundColor: Colors.lightGray, barStyle: "dark-content" }}
@@ -47,7 +45,7 @@ const SessionDetail: React.FC = () => {
             goBack();
           }}
         />
-        <Text style={styles.date}>{`Le ${date} à ${hour}`}</Text>
+        <Text style={styles.date}>{`Le ${new Date(sessionDetails.date).toLocaleString("fr")}`}</Text>
         <View style={styles.cardContainer}>
           <Avatar source={defaultProfile} />
           <View style={styles.cardRight}>

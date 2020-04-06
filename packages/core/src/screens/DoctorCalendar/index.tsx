@@ -35,12 +35,12 @@ const DoctorCalendar: React.FC = () => {
       });
   }
 
-  const handleDayPress: onHourPressFunction = (day, hour) => {
-    if (hour.id) {
+  const handleDayPress: onHourPressFunction = (time) => {
+    if (time.id) {
       if (isWeb) {
-        navigate("/doctor/session/:id", { id: hour.id });
+        navigate("/doctor/session/:id", { id: time.id });
       } else {
-        navigate("SessionDetail", { id: hour.id });
+        navigate("SessionDetail", { id: time.id });
       }
     } else {
       throw new Error("unexpected undefined session id");

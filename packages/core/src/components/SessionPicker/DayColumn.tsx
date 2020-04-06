@@ -1,20 +1,18 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { ZTimes, onHourPressFunction, SessionPickerProps } from ".";
+import { ZSessions, onHourPressFunction, SessionPickerProps } from ".";
 import { dayColStyles } from "./styles";
 import Touchable from "../Touchable";
-import { ZTime } from "../../utils/ztime";
-import { getDateFromString } from "../../utils/zdate";
 
 interface DayColumnProps {
   filterMode: SessionPickerProps["filterMode"];
   day: string;
-  hours: ZTimes;
+  hours: ZSessions;
   width: number;
   onHourPress?: onHourPressFunction;
 }
 
-const DayColumn: React.FC<DayColumnProps> = ({ day, hours, width, onHourPress = () => {} }) => {
+const DayColumn: React.FC<DayColumnProps> = ({ hours, width, onHourPress = () => {} }) => {
   return (
     <View style={[dayColStyles.container, { width: `${width}%` }]}>
       {hours.map((hour, index) => {
@@ -24,7 +22,7 @@ const DayColumn: React.FC<DayColumnProps> = ({ day, hours, width, onHourPress = 
           <Touchable
             shadow={!hour.unavailable}
             onPress={() => {
-              onHourPress(ZTime.setDateAtTime(getDateFromString(day), hour), hour);
+              onHourPress(hour);
             }}
             key={`hour-${hour.unavailable ?? "unv"}${index}`}
             style={[
@@ -35,7 +33,7 @@ const DayColumn: React.FC<DayColumnProps> = ({ day, hours, width, onHourPress = 
             ]}
             borderRadius={8}
           >
-            <Text style={[dayColStyles.hourText, isHourTaken && dayColStyles.takenHourText]}>{hour.toString()}</Text>
+            <Text style={[dayColStyles.hourText, isHourTaken && dayColStyles.takenHourText]}>{hour.timeString()}</Text>
             {/* {hour.id && <View style={dayColStyles.dot} />} */}
           </Touchable>
         );

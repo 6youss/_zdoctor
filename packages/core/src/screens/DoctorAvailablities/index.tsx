@@ -15,6 +15,7 @@ import { IDoctor } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
 import CalendarContainer from "../../components/CalendarContainer";
+import { ZTime } from "../../utils/ztime";
 
 const DoctorAvailablities: React.FC = () => {
   const dispatch = useDispatch();
@@ -39,11 +40,11 @@ const DoctorAvailablities: React.FC = () => {
       });
   }
 
-  const handleHourPress: onHourPressFunction = (date) => {
+  const handleHourPress: onHourPressFunction = (time: ZTime) => {
     let newEditedUnavailibities = [...editedUnavailibities];
     newEditedUnavailibities.push({
-      from: date,
-      to: addMinutes(date, 29),
+      from: time.date,
+      to: addMinutes(time.date, 29),
     });
     setEditedUnavailibities(newEditedUnavailibities);
   };

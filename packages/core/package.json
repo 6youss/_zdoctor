@@ -4,27 +4,19 @@
   "author": "Youcef ZAHARIOU",
   "license": "MIT",
   "scripts": {
-    "compile": "tsc -b",
-    "prestart": "npm run compile",
-    "start": "concurrently \"npm run compile -- -w --incremental\" \"npm run _start\"",
-    "_start": "react-app-rewired start",
-    "prebuild": "npm run compile",
-    "build": "react-app-rewired build",
-    "pretest": "npm run compile",
-    "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "test": "jest --verbose"
   },
   "dependencies": {
     "@react-native-firebase/messaging": "^6.3.4",
     "@react-navigation/native": "^5.1.4",
     "@react-navigation/stack": "^5.2.9",
+    "express": "4.17.1",
     "react": "16.11.0",
     "react-native": "0.62.0",
     "react-native-vector-icons": "^6.6.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-logger": "^3.0.6",
-    "express": "4.17.1"
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "@types/jest": "^24.0.24",
@@ -32,6 +24,7 @@
     "@types/react-native-vector-icons": "^6.4.5",
     "@types/react-redux": "^7.1.7",
     "@types/redux-logger": "^3.0.7",
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "ts-jest": "^25.3.1"
   }
 }

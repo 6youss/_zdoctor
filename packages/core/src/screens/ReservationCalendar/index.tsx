@@ -50,15 +50,16 @@ const ReserveSession: React.FC = () => {
     setCurrentDay(addDays(currentDay, -3));
   }
 
-  function handleHourPress(date: Date, time: ZTime) {
+  function handleHourPress(time: ZTime) {
+    console.log(time.date.toISOString());
     alert(
       "Prendre rendez vous",
-      `Confirmer la prise du rendez-vous le ${date.toLocaleDateString("fr")} à ${time.toString()} ?`,
+      `Confirmer la prise du rendez-vous le ${time.date.toLocaleDateString("fr")} à ${time.timeString()} ?`,
       [
         {
           text: "Confirmer",
           onPress: () => {
-            postSession(accessToken, patient._id, doctor._id, date)
+            postSession(accessToken, patient._id, doctor._id, time.date)
               .then((session) => {
                 fetchSessions();
                 alert("Success", `session prise avec succes`);
