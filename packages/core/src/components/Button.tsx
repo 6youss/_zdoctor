@@ -23,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({ onPress, light, text, loading = false, 
         styles.button,
         light && { backgroundColor: Colors.white },
         style,
-        color !== undefined && { backgroundColor: color }
+        color !== undefined && { backgroundColor: color },
       ]}
     >
       {loading ? <Loader /> : <Text style={[styles.buttonText, light && { color: Colors.primary }]}>{text}</Text>}
@@ -37,11 +37,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: Colors.primary,
     padding: 8,
-    minHeight: 40
+    minHeight: 40,
   },
   buttonText: {
     color: Colors.white,
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
 });
 export default Button;

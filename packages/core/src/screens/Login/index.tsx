@@ -1,16 +1,16 @@
 import React from "react";
-import { View, Image, Alert } from "react-native";
+import { View, Image } from "react-native";
 import { postLogin, getUser } from "../../api/user";
 import { useDispatch } from "react-redux";
 import { signInAction } from "../../redux/actions/userActions";
 import { ScreenContainer, Input } from "../../components";
 import Button from "../../components/Button";
-import logoWhite from "../../assets/logoWhite.png";
 import { Colors } from "../../utils/values";
 import styles from "./styles";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 import { setPatientAction } from "../../redux/actions/patientActions";
 import { useAlert } from "../../components/Alert";
+import { logoWhite } from "../../assets";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,30 +42,26 @@ const Login: React.FC = () => {
   return (
     <ScreenContainer status={{ backgroundColor: Colors.primary }}>
       <View style={styles.container}>
-        <View style={{ width: "100%" }}>
-          <View style={{ alignItems: "center" }}>
-            <Image style={styles.loginLogo} source={logoWhite} />
-          </View>
+        <Image style={styles.loginLogo} resizeMode="contain" source={logoWhite} />
 
-          <Input
-            value={username}
-            onChangeText={(text) => {
-              setUsername(text);
-            }}
-            style={styles.loginInput}
-            placeholder="Nom d'utilisateur"
-          />
-          <Input
-            value={password}
-            onChangeText={(text) => {
-              setPassword(text);
-            }}
-            style={[styles.loginInput, { marginBottom: 40 }]}
-            placeholder="Mot de passe"
-            secureTextEntry
-          />
-          <Button onPress={login} text="Login" light loading={loading} />
-        </View>
+        <Input
+          value={username}
+          onChangeText={(text) => {
+            setUsername(text);
+          }}
+          style={styles.loginInput}
+          placeholder="Nom d'utilisateur"
+        />
+        <Input
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
+          style={[styles.loginInput, { marginBottom: 40 }]}
+          placeholder="Mot de passe"
+          secureTextEntry
+        />
+        <Button onPress={login} text="Login" light loading={loading} style={{ width: "100%", maxWidth: 400 }} />
       </View>
     </ScreenContainer>
   );

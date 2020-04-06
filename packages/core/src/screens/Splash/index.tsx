@@ -12,7 +12,7 @@ const Splash = () => {
       <View style={styles.container}>
         <View style={{ width: "100%", height: "100%" }}>
           <Image style={styles.bgLight} source={bgLight} />
-          <Image style={styles.logo} source={logoWhite} />
+          <Image style={styles.logo} resizeMode="contain" source={logoWhite} />
         </View>
       </View>
     </ScreenContainer>
