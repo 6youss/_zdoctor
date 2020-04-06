@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, StatusBar, StatusBarProps, ViewProps } from "react-native";
-import { Colors } from "../utils/values";
+import { Colors, isWeb } from "../utils/values";
 
 interface ScreenContainerProps {
   status?: StatusBarProps;
@@ -11,7 +11,10 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ children, status, saf
   return (
     <>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" {...status} />
-      <SafeAreaView {...safeArea} style={[{ backgroundColor: Colors.primary, flex: 1 }, safeArea?.style]}>
+      <SafeAreaView
+        {...safeArea}
+        style={[{ backgroundColor: Colors.primary, flex: 1 }, isWeb && { paddingHorizontal: "5%" }, safeArea?.style]}
+      >
         {children}
       </SafeAreaView>
     </>

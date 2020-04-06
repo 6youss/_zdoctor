@@ -11,6 +11,7 @@ import { Colors, bigShadow, isWeb } from "../../utils/values";
 import { addDays } from "../../utils/zdate";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
+import CalendarContainer from "../../components/CalendarContainer";
 
 const DoctorCalendar: React.FC = () => {
   const dispatch = useDispatch();
@@ -75,25 +76,17 @@ const DoctorCalendar: React.FC = () => {
         </Touchable>
       </View>
 
-      <View
-        style={{
-          flexGrow: 1,
-          marginHorizontal: 20,
-          ...bigShadow,
-        }}
-      >
-        <View style={[styles.sessionPickerContainer, { elevation: bigShadow.elevation }]}>
-          <SessionPicker
-            filterMode="taken"
-            currentDate={currentDay}
-            allreadyTakenHours={sessions}
-            onHourPress={handleDayPress}
-            onArrowLeftPress={handleLeftPress}
-            onArrowRightPress={handleRightPress}
-            onRefresh={fetchSessions}
-          />
-        </View>
-      </View>
+      <CalendarContainer>
+        <SessionPicker
+          filterMode="taken"
+          currentDate={currentDay}
+          allreadyTakenHours={sessions}
+          onHourPress={handleDayPress}
+          onArrowLeftPress={handleLeftPress}
+          onArrowRightPress={handleRightPress}
+          onRefresh={fetchSessions}
+        />
+      </CalendarContainer>
     </ScreenContainer>
   );
 };

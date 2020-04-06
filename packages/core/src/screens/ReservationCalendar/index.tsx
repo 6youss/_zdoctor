@@ -17,6 +17,7 @@ import { fetchDoctorByPhone } from "../../api/doctor";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
+import CalendarContainer from "../../components/CalendarContainer";
 
 const ReserveSession: React.FC = () => {
   const dispatch = useDispatch();
@@ -98,29 +99,20 @@ const ReserveSession: React.FC = () => {
           </Touchable>
         </GoBack>
       </View>
-      <View
-        style={{
-          flexGrow: 1,
-          marginHorizontal: 20,
-          ...bigShadow,
-        }}
-      >
-        <View style={[styles.pickerContainer, { elevation: bigShadow.elevation }]}>
-          <SessionPicker
-            filterMode="available"
-            currentDate={currentDay}
-            onHourPress={handleHourPress}
-            dayCount={3}
-            unavailablitites={doctor.unavailablities}
-            workingHours={doctor.workingHours}
-            sessionDurations={doctor.sessionDurations}
-            allreadyTakenHours={sessions}
-            onArrowLeftPress={handleLeftPress}
-            onArrowRightPress={handleRightPress}
-            onRefresh={fetchSessions}
-          />
-        </View>
-      </View>
+      <CalendarContainer>
+        <SessionPicker
+          filterMode="available"
+          currentDate={currentDay}
+          onHourPress={handleHourPress}
+          unavailablitites={doctor.unavailablities}
+          workingHours={doctor.workingHours}
+          sessionDurations={doctor.sessionDurations}
+          allreadyTakenHours={sessions}
+          onArrowLeftPress={handleLeftPress}
+          onArrowRightPress={handleRightPress}
+          onRefresh={fetchSessions}
+        />
+      </CalendarContainer>
     </ScreenContainer>
   );
 };

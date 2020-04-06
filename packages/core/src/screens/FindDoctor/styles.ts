@@ -1,17 +1,17 @@
-import {StyleSheet} from 'react-native';
-import {Colors, bigShadow} from '../../utils/values';
-import {screenHeight} from '../../utils/dimentions';
+import { StyleSheet } from "react-native";
+import { Colors, bigShadow } from "../../utils/values";
+import { screenHeight } from "../../utils/dimentions";
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
+    flex: 1,
     backgroundColor: Colors.white,
   },
   searchContainer: {
     backgroundColor: Colors.primary,
     paddingVertical: 20,
-    paddingHorizontal: 15,
-    alignItems: 'center',
+    paddingHorizontal: 20,
+    alignItems: "center",
   },
   profilePic: {
     width: 70,
@@ -25,14 +25,13 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   pushToBottomCenter: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: 100,
+    // flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
   doctorIllustration: {
-    resizeMode: 'contain',
-    width: '100%',
+    resizeMode: "contain",
+    width: "100%",
     height: screenHeight(40),
   },
 });
@@ -41,14 +40,14 @@ export const foundStyles = StyleSheet.create({
   container: {
     borderRadius: 20,
     padding: 40,
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: Colors.white,
     margin: 30,
-    ...bigShadow,
+    // ...bigShadow,
   },
   descContainer: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   descText: {
     fontSize: 20,

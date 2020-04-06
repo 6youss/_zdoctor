@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Image, Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { ScreenContainer, Input, Touchable } from "../../components";
+import { ScreenContainer, Input, Touchable, GoBack } from "../../components";
 import styles from "./styles";
 import { fetchDoctorByPhone } from "../../api/doctor";
 import Avatar from "../../components/Avatar";
@@ -46,23 +46,31 @@ const FindDoctor: React.FC = () => {
   }
 
   return (
-    <ScreenContainer safeArea={{ style: { marginBottom: -100 } }}>
+    <ScreenContainer safeArea={{ style: { paddingHorizontal: 0 } }}>
       <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <Touchable
-            onPress={() => {
-              if (isWeb) {
-                navigate("/patient/profile");
-              } else {
-                navigate("PatientProfile");
-              }
-            }}
-          >
-            <Avatar radius={70} />
-          </Touchable>
-          <Text style={styles.profileName}>
-            {patient.firstName} {patient.lastName}
-          </Text>
+        <View style={[styles.searchContainer, isWeb && { paddingHorizontal: "5%" }]}>
+          <View style={{ width: "100%", marginHorizontal: 20, marginVertical: 15 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+              <View />
+              <Text style={{ color: Colors.white }}>
+                <Text style={{ fontWeight: "100" }}>{`Mr `}</Text>
+                {`${patient.firstName} ${patient.lastName}`}
+              </Text>
+              <Touchable
+                borderRadius={30}
+                onPress={() => {
+                  if (isWeb) {
+                    navigate("/patient/profile");
+                  } else {
+                    navigate("PatientProfile");
+                  }
+                }}
+                style={{ justifyContent: "center", alignItems: "center" }}
+              >
+                <Avatar radius={35} style={{ margin: 5 }} />
+              </Touchable>
+            </View>
+          </View>
           <Input
             style={{ textAlign: "center" }}
             placeholder="Numéro du docteur"

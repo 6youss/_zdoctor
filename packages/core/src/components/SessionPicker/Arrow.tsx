@@ -10,16 +10,16 @@ const arrowStyles = StyleSheet.create({
     width: "10%",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 const Arrow: React.FC<{ left?: boolean; onPress: () => void }> = ({ left, onPress }) => {
   return (
     <Touchable borderRadius={0} onPress={onPress} style={arrowStyles.touch}>
       <MaterialIcons
         style={{
-          fontSize: 14,
-          color: Colors.darkGray
+          fontSize: 18,
+          color: Colors.darkGray,
         }}
         name={left ? "arrow-back" : "arrow-forward"}
       />

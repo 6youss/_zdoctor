@@ -4,14 +4,14 @@ import { ZTime } from "../../utils/ztime";
 import styles, { dayColStyles } from "./styles";
 
 import DayColumn from "./DayColumn";
-import { Colors } from "../../utils/values";
+import { Colors, isWeb } from "../../utils/values";
 import {
   getDayName,
   getMonthName,
   getDateFromString,
   getStringFromDate,
   dateRange,
-  isDateInRange
+  isDateInRange,
 } from "../../utils/zdate";
 import Arrow from "./Arrow";
 
@@ -32,11 +32,11 @@ export interface ZSessions {
 
 export type onHourPressFunction = (dayTime: Date, hour: ZTime) => void;
 export type onDayPressFunction = (day: Date) => void;
-
+export type dayCounts = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export interface SessionPickerProps {
   filterMode: "taken" | "available" | "both";
   currentDate?: Date;
-  dayCount?: 1 | 2 | 3 | 4 | 5;
+  dayCount?: dayCounts;
   defaultStartingHour?: ZTime;
   defaultEndingHour?: ZTime;
   defaultSessionDuration?: number;
@@ -54,7 +54,7 @@ export interface SessionPickerProps {
 const SessionPicker: React.FC<SessionPickerProps> = ({
   filterMode,
   currentDate = new Date(),
-  dayCount = 3,
+  dayCount,
   defaultStartingHour = ZTime.fromString("08:00"),
   defaultEndingHour = ZTime.fromString("17:00"),
   defaultSessionDuration = 30,
@@ -66,8 +66,12 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
   onDayPress = () => {},
   onRefresh = () => {},
   onArrowRightPress = () => {},
-  onArrowLeftPress = () => {}
+  onArrowLeftPress = () => {},
 }) => {
+  if (!dayCount) {
+    let defaultDayCount: dayCounts = isWeb ? 7 : 3;
+    dayCount = defaultDayCount;
+  }
   const dayColumnWidth = 80 / dayCount;
   const shownDatesRange = dateRange(currentDate, dayCount - 1);
   let filteredHours: ZSessions = {};
@@ -78,7 +82,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
     const dateStr = getStringFromDate(date, false);
     __allredyTakenHours[dateStr] = [];
     if (allreadyTakenHours[dateStr]) {
-      __allredyTakenHours[dateStr] = allreadyTakenHours[dateStr].map(hour => {
+      __allredyTakenHours[dateStr] = allreadyTakenHours[dateStr].map((hour) => {
         if (typeof hour === "string") {
           return ZTime.fromString(hour);
         } else {
@@ -92,7 +96,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
   function getWorkHours(date: Date): { startingHour: ZTime; endingHour: ZTime } {
     let range = {
       startingHour: defaultStartingHour,
-      endingHour: defaultEndingHour
+      endingHour: defaultEndingHour,
     };
     for (let wh of workingHours) {
       if (isDateInRange(date, wh.from, wh.to)) {
@@ -137,7 +141,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
         _hour.unavailable = true;
       }
 
-      const takenHour = allreadyTakenHours.find(hour => hour.equals(_hour));
+      const takenHour = allreadyTakenHours.find((hour) => hour.equals(_hour));
       if (takenHour) {
         _hour.id = takenHour.id;
       }
@@ -172,7 +176,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
           flexDirection: "row",
           height: 60,
           alignItems: "center",
-          backgroundColor: Colors.white
+          backgroundColor: Colors.white,
         }}
       >
         <Arrow
@@ -181,7 +185,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
           }}
           left
         />
-        {Object.keys(filteredHours).map(dateKey => {
+        {Object.keys(filteredHours).map((dateKey) => {
           const date = getDateFromString(dateKey);
           const emptyDay = filteredHours[dateKey].length === 0;
           return (
@@ -192,7 +196,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
               key={dateKey}
               style={{
                 width: `${dayColumnWidth}%`,
-                opacity: emptyDay ? 0.5 : 1
+                opacity: emptyDay ? 0.5 : 1,
               }}
             >
               <Text style={dayColStyles.day}>{getDayName(date)}</Text>
@@ -215,11 +219,11 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
     <View style={styles.container}>
       <DaysHeader />
       <ScrollView
-        style={{ flex: 1 }}
+        style={[{ flexGrow: 1 }, isWeb && { height: 1 }]}
         refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
         contentContainerStyle={styles.hoursContainer}
       >
-        {Object.keys(filteredHours).map(date => {
+        {Object.keys(filteredHours).map((date) => {
           // console.log(filteredHours[date]);
           return (
             <DayColumn

@@ -10,7 +10,7 @@ const GoBack: React.FC<{ color?: string; onPress: () => void }> = ({ children, o
       style={{
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
       }}
     >
       <Touchable onPress={onPress} borderRadius={20} style={styles.goBack}>
@@ -28,11 +28,13 @@ const styles = StyleSheet.create({
     height: 30,
     padding: 5,
     justifyContent: "center",
-    alignContent: "center"
+    alignContent: "center",
   },
   goBackTxt: {
-    fontSize: 20,
+    fontSize: 25,
     color: Colors.primary,
-    textAlign: "center"
-  }
+    textAlign: "center",
+    justifyContent: "center",
+    alignContent: "center",
+  },
 });

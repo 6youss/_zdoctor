@@ -8,12 +8,13 @@ import { ScreenContainer, Avatar, Touchable } from "../../components";
 import SessionPicker, { onHourPressFunction } from "../../components/SessionPicker";
 import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
-import { Colors, bigShadow, isWeb } from "../../utils/values";
+import { Colors, isWeb } from "../../utils/values";
 import { addDays, addMinutes } from "../../utils/zdate";
 
 import { IDoctor } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
+import CalendarContainer from "../../components/CalendarContainer";
 
 const DoctorAvailablities: React.FC = () => {
   const dispatch = useDispatch();
@@ -78,28 +79,20 @@ const DoctorAvailablities: React.FC = () => {
         </Touchable>
       </View>
 
-      <View
-        style={{
-          flexGrow: 1,
-          marginHorizontal: 20,
-          ...bigShadow,
-        }}
-      >
-        <View style={[styles.sessionPickerContainer, { elevation: bigShadow.elevation }]}>
-          <SessionPicker
-            filterMode="both"
-            currentDate={currentDay}
-            allreadyTakenHours={sessions}
-            unavailablitites={unavailablitiesConcat}
-            workingHours={doctor.workingHours}
-            sessionDurations={doctor.sessionDurations}
-            onHourPress={handleHourPress}
-            onArrowLeftPress={handleLeftPress}
-            onArrowRightPress={handleRightPress}
-            onRefresh={fetchSessions}
-          />
-        </View>
-      </View>
+      <CalendarContainer>
+        <SessionPicker
+          filterMode="both"
+          currentDate={currentDay}
+          allreadyTakenHours={sessions}
+          unavailablitites={unavailablitiesConcat}
+          workingHours={doctor.workingHours}
+          sessionDurations={doctor.sessionDurations}
+          onHourPress={handleHourPress}
+          onArrowLeftPress={handleLeftPress}
+          onArrowRightPress={handleRightPress}
+          onRefresh={fetchSessions}
+        />
+      </CalendarContainer>
     </ScreenContainer>
   );
 };
