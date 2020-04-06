@@ -51,22 +51,26 @@ const ReserveSession: React.FC = () => {
   }
 
   function handleHourPress(date: Date, time: ZTime) {
-    alert("Prendre rendez vous", `Confirmer la prise du rendez-vous le ${date} à ${time.toString()} ?`, [
-      {
-        text: "Confirmer",
-        onPress: () => {
-          postSession(accessToken, patient._id, doctor._id, date)
-            .then((session) => {
-              fetchSessions();
-              alert("Success", `session prise avec succes`);
-            })
-            .catch((error) => {
-              alert("Oops!", error.message);
-            });
+    alert(
+      "Prendre rendez vous",
+      `Confirmer la prise du rendez-vous le ${date.toLocaleDateString("fr")} à ${time.toString()} ?`,
+      [
+        {
+          text: "Confirmer",
+          onPress: () => {
+            postSession(accessToken, patient._id, doctor._id, date)
+              .then((session) => {
+                fetchSessions();
+                alert("Success", `session prise avec succes`);
+              })
+              .catch((error) => {
+                alert("Oops!", error.message);
+              });
+          },
         },
-      },
-      { text: "Annuler" },
-    ]);
+        { text: "Annuler" },
+      ]
+    );
   }
 
   return (

@@ -25,7 +25,7 @@ const SessionDetail: React.FC = () => {
     getSessionDetails(accessToken, params.id)
       .then((sessionDetails) => {
         setSessionDetails(sessionDetails);
-        alert("ahum", JSON.stringify(sessionDetails));
+        // alert("ahum", JSON.stringify(sessionDetails));
       })
       .catch((error) => {
         alert("Oops!", error.message);

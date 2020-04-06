@@ -16,7 +16,7 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [username, setUsername] = React.useState<string>(__DEV__ ? (true ? "doctor" : "patient") : "");
+  const [username, setUsername] = React.useState<string>(__DEV__ ? (false ? "doctor" : "patient") : "");
   const [password, setPassword] = React.useState<string>(__DEV__ ? "123456" : "");
 
   function login() {

@@ -49,12 +49,11 @@ const FindDoctor: React.FC = () => {
     <ScreenContainer safeArea={{ style: { paddingHorizontal: 0 } }}>
       <View style={styles.container}>
         <View style={[styles.searchContainer, isWeb && { paddingHorizontal: "5%" }]}>
-          <View style={{ width: "100%", marginHorizontal: 20, marginVertical: 15 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-              <View />
+          <View style={{ width: "100%", marginHorizontal: 20, marginVertical: 20 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
               <Text style={{ color: Colors.white }}>
-                <Text style={{ fontWeight: "100" }}>{`Mr `}</Text>
-                {`${patient.firstName} ${patient.lastName}`}
+                <Text style={{ fontWeight: "100" }}>{foundDoctor ? `Médecin trouvé !` : `Trouvez votre médecin`}</Text>
+                {/* {`${patient.firstName} ${patient.lastName}`} */}
               </Text>
               <Touchable
                 borderRadius={30}
@@ -65,7 +64,7 @@ const FindDoctor: React.FC = () => {
                     navigate("PatientProfile");
                   }
                 }}
-                style={{ justifyContent: "center", alignItems: "center" }}
+                style={{ position: "absolute", right: 0, justifyContent: "center", alignItems: "center" }}
               >
                 <Avatar radius={35} style={{ margin: 5 }} />
               </Touchable>
@@ -103,7 +102,7 @@ const FindDoctor: React.FC = () => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View>
                 <Image style={styles.doctorIllustration} source={doctorIllustration} />
-                <Text
+                {/* <Text
                   style={{
                     textAlign: "center",
                     fontSize: 15,
@@ -111,7 +110,7 @@ const FindDoctor: React.FC = () => {
                   }}
                 >
                   Trouvez votre médecin
-                </Text>
+                </Text> */}
               </View>
             </TouchableWithoutFeedback>
           </>
