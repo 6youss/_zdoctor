@@ -61,7 +61,7 @@ const Login: React.FC = () => {
           placeholder="Mot de passe"
           secureTextEntry
         />
-        <Button onPress={login} text="Login" light loading={loading} style={{ width: "100%", maxWidth: 400 }} />
+        <Button onPress={login} text="S'identifié" light loading={loading} style={{ width: "100%", maxWidth: 400 }} />
       </View>
     </ScreenContainer>
   );

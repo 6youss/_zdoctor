@@ -3,7 +3,7 @@ export function addMinutes(date: Date, minutes: number) {
 }
 
 export function timeToMinutes(date: Date): number {
-  return date.getHours() * 60 + date.getMinutes();
+  return date.getUTCHours() * 60 + date.getUTCMinutes();
 }
 
 export function isNumberInRange(num: number, from: number, to: number): boolean {
@@ -36,7 +36,7 @@ export function dateRange(startDate: Date, dayCount: number): Array<Date> {
 
 export function addDays(date: Date, days: number): Date {
   var newdate = new Date(date.valueOf());
-  newdate.setDate(date.getDate() + days);
+  newdate.setUTCDate(date.getUTCDate() + days);
   return newdate;
 }
 
@@ -61,5 +61,5 @@ export function getMonthName(date: Date, short: boolean = true): string {
     "Decembre",
   ];
 
-  return short ? months[date.getMonth()].substring(0, 4) : months[date.getMonth()];
+  return short ? months[date.getUTCMonth()].substring(0, 4) : months[date.getUTCMonth()];
 }

@@ -31,10 +31,10 @@ export interface SessionPickerProps {
   defaultStartingHour?: number;
   defaultEndingHour?: number;
   defaultSessionDuration?: number;
-  workingHours?: IDoctor["workingHours"];
-  sessionDurations?: IDoctor["sessionDurations"];
-  unavailablitites?: IDoctor["unavailablities"];
-  allreadyTakenHours?: Sessions;
+  workingHours: IDoctor["workingHours"];
+  sessionDurations: IDoctor["sessionDurations"];
+  unavailablitites: IDoctor["unavailablities"];
+  allreadyTakenHours: Sessions;
   onHourPress?: onHourPressFunction;
   onDayPress?: onDayPressFunction;
   onRefresh?: () => void;
@@ -85,7 +85,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
         range.endingHour = wh.closesAt;
       }
     }
-    return range;
+    return { ...range };
   }
 
   function getSessionDuration(date: Date): number {
@@ -100,14 +100,16 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
 
   function filterHours(sessionDateKey: string): Array<ZTime> {
     let dateAllreadyTakenHours = __allredyTakenHours[sessionDateKey];
+
     const sessionDate = new Date(sessionDateKey);
     let { startingHour, endingHour } = getWorkHours(sessionDate);
+    // console.log(sessionDate.toISOString(), { startingHour, endingHour });
     let sessionDuration = getSessionDuration(sessionDate);
     let filteredHours: Array<ZTime> = [];
 
-    let _hour: ZTime = new ZTime(new Date(sessionDate.setUTCHours(startingHour / 60, startingHour % 60)).toISOString());
+    // console.log(new Date(sessionDate.setUTCHours(startingHour / 60, startingHour % 60)).toISOString());
 
-    // console.log(_hour, sessionDateKey);
+    let _hour: ZTime = new ZTime(new Date(sessionDate.setUTCHours(startingHour / 60, startingHour % 60)).toISOString());
 
     while (_hour.toMinutes() < endingHour && endingHour - _hour.toMinutes() >= sessionDuration) {
       let isUnavailableHour = false;
@@ -123,6 +125,7 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
       }
 
       const takenHour = dateAllreadyTakenHours.find((hour) => hour.equals(_hour));
+
       if (takenHour) {
         _hour.id = takenHour.id;
       }
@@ -130,7 +133,6 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
       switch (filterMode) {
         case "available": {
           if (!_hour.unavailable && !_hour.id) {
-            //console.log(_hour);
             filteredHours.push(_hour);
           }
           break;
@@ -147,7 +149,6 @@ const SessionPicker: React.FC<SessionPickerProps> = ({
 
       _hour = _hour.addDuration(sessionDuration);
     }
-
     return filteredHours;
   }
 
