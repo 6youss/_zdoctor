@@ -18,8 +18,8 @@ const CalendarContainer: React.FC = ({ children }) => {
         marginHorizontal: 20,
         ...bigShadow,
         overflow: "hidden",
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
+        borderRadius: 20,
+        // borderTopLeftRadius: 20,
       }}
     >
       <View style={[styles.sessionPickerContainer, { elevation: bigShadow.elevation }]}>{children}</View>
