@@ -1,13 +1,42 @@
+interface DateRange {
+  from: Date;
+  to: Date | null;
+}
 export function addMinutes(date: Date, minutes: number) {
   return new Date(date.getTime() + minutes * 60 * 1000);
 }
 
 export function timeToMinutes(date: Date): number {
-  return date.getHours() * 60 + date.getMinutes();
+  return date.getUTCHours() * 60 + date.getUTCMinutes();
 }
 
 export function isNumberInRange(num: number, from: number, to: number): boolean {
   return num >= from && num <= to;
+}
+
+export function concatDateRanges(dateRanges: Array<DateRange>): Array<DateRange> {
+  dateRanges.sort((unv1, unv2) => {
+    if (unv1.from < unv2.from) return -1;
+    if (unv1.from > unv2.from) return 1;
+    return 0;
+  });
+
+  console.log({ dateRanges });
+
+  let normalizedIntervals = [];
+
+  let concatRange = dateRanges[0];
+  for (let i = 1; i < dateRanges.length; i++) {
+    let currentRange = dateRanges[i];
+    if (concatRange.to === currentRange.from) {
+      concatRange.to = currentRange.to;
+    } else {
+      normalizedIntervals.push({ ...concatRange });
+      concatRange = { ...currentRange };
+    }
+  }
+  normalizedIntervals.push({ ...concatRange });
+  return normalizedIntervals;
 }
 
 export function isDateInRange(date: Date, from: Date, to: Date | null, ignoreTime: boolean = true): boolean {
@@ -23,7 +52,7 @@ export function isDateInRange(date: Date, from: Date, to: Date | null, ignoreTim
   return _date.getTime() >= _from.getTime() && (_to === null || _date.getTime() <= _to.getTime());
 }
 
-export function dateRange(startDate: Date, dayCount: number): Array<Date> {
+export function makeDateRange(startDate: Date, dayCount: number): Array<Date> {
   var dateArray = new Array();
   var stopDate = addDays(startDate, dayCount);
   var currentDate = startDate;
@@ -36,7 +65,7 @@ export function dateRange(startDate: Date, dayCount: number): Array<Date> {
 
 export function addDays(date: Date, days: number): Date {
   var newdate = new Date(date.valueOf());
-  newdate.setDate(date.getDate() + days);
+  newdate.setUTCDate(date.getUTCDate() + days);
   return newdate;
 }
 
@@ -61,5 +90,5 @@ export function getMonthName(date: Date, short: boolean = true): string {
     "Decembre",
   ];
 
-  return short ? months[date.getMonth()].substring(0, 4) : months[date.getMonth()];
+  return short ? months[date.getUTCMonth()].substring(0, 4) : months[date.getUTCMonth()];
 }

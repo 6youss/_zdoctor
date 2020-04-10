@@ -81,6 +81,9 @@ const DoctorCalendar: React.FC = () => {
           filterMode="taken"
           currentDate={currentDay}
           allreadyTakenHours={sessions}
+          workingHours={doctor.workingHours}
+          unavailablitites={doctor.unavailablities}
+          sessionDurations={doctor.sessionDurations}
           onHourPress={handleDayPress}
           onArrowLeftPress={handleLeftPress}
           onArrowRightPress={handleRightPress}

@@ -51,6 +51,7 @@ const Login: React.FC = () => {
           }}
           style={styles.loginInput}
           placeholder="Nom d'utilisateur"
+          returnKeyType="next"
         />
         <Input
           value={password}
@@ -60,8 +61,9 @@ const Login: React.FC = () => {
           style={[styles.loginInput, { marginBottom: 40 }]}
           placeholder="Mot de passe"
           secureTextEntry
+          onSubmitEditing={login}
         />
-        <Button onPress={login} text="Login" light loading={loading} style={{ width: "100%", maxWidth: 400 }} />
+        <Button onPress={login} text="S'identifié" light loading={loading} style={{ width: "100%", maxWidth: 400 }} />
       </View>
     </ScreenContainer>
   );

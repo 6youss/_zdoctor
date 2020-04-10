@@ -4,7 +4,7 @@ import styles from "./styles";
 
 import { useSelector, useDispatch } from "react-redux";
 import { doctorSelector, tokenSelector, sessionsSelector } from "../../redux/selectors";
-import { ScreenContainer, Avatar, Touchable } from "../../components";
+import { ScreenContainer, Avatar, Touchable, Button } from "../../components";
 import SessionPicker, { onHourPressFunction } from "../../components/SessionPicker";
 import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
@@ -23,7 +23,9 @@ const DoctorAvailablities: React.FC = () => {
   const accessToken = useSelector(tokenSelector);
   const sessions = useSelector(sessionsSelector);
   const [currentDay, setCurrentDay] = React.useState<Date>(new Date());
-  const [editedUnavailibities, setEditedUnavailibities] = React.useState<IDoctor["unavailablities"]>([]);
+  const [editedUnavailibities, setEditedUnavailibities] = React.useState<IDoctor["unavailablities"]>(
+    JSON.parse(JSON.stringify(doctor.unavailablities))
+  );
   const { navigate } = useUnifiedNavigation();
   const alert = useAlert();
   React.useEffect(() => {
@@ -61,39 +63,44 @@ const DoctorAvailablities: React.FC = () => {
   return (
     <ScreenContainer
       status={{ backgroundColor: Colors.white, barStyle: "dark-content" }}
-      safeArea={{ style: { backgroundColor: Colors.white } }}
+      safeArea={{ style: { backgroundColor: Colors.white, paddingHorizontal: 0 } }}
     >
-      <View style={styles.header}>
-        <Text style={styles.calendarTitle}>Disponibilités</Text>
-        <Touchable
-          borderRadius={30}
-          onPress={() => {
-            if (isWeb) {
-              navigate("/doctor/profile");
-            } else {
-              navigate("DoctorProfile");
-            }
-          }}
-          style={{ justifyContent: "center", alignItems: "center" }}
-        >
-          <Avatar radius={35} style={{ margin: 5 }} />
-        </Touchable>
-      </View>
+      <View style={{ flex: 1, paddingHorizontal: isWeb ? "5%" : 0 }}>
+        <View style={styles.header}>
+          <Text style={styles.calendarTitle}>Disponibilités</Text>
+          <Touchable
+            borderRadius={30}
+            onPress={() => {
+              if (isWeb) {
+                navigate("/doctor/profile");
+              } else {
+                navigate("DoctorProfile");
+              }
+            }}
+            style={{ justifyContent: "center", alignItems: "center" }}
+          >
+            <Avatar radius={35} style={{ margin: 5 }} />
+          </Touchable>
+        </View>
 
-      <CalendarContainer>
-        <SessionPicker
-          filterMode="both"
-          currentDate={currentDay}
-          allreadyTakenHours={sessions}
-          unavailablitites={unavailablitiesConcat}
-          workingHours={doctor.workingHours}
-          sessionDurations={doctor.sessionDurations}
-          onHourPress={handleHourPress}
-          onArrowLeftPress={handleLeftPress}
-          onArrowRightPress={handleRightPress}
-          onRefresh={fetchSessions}
-        />
-      </CalendarContainer>
+        <CalendarContainer>
+          <SessionPicker
+            filterMode="both"
+            currentDate={currentDay}
+            allreadyTakenHours={sessions}
+            unavailablitites={unavailablitiesConcat}
+            workingHours={doctor.workingHours}
+            sessionDurations={doctor.sessionDurations}
+            onHourPress={handleHourPress}
+            onArrowLeftPress={handleLeftPress}
+            onArrowRightPress={handleRightPress}
+            onRefresh={fetchSessions}
+          />
+        </CalendarContainer>
+      </View>
+      <View style={{ flexDirection: "row-reverse", paddingHorizontal: isWeb ? "5%" : 0, paddingVertical: 20 }}>
+        <Button style={{ marginHorizontal: 20, width: 100 }} text="Définir" onPress={() => {}} />
+      </View>
     </ScreenContainer>
   );
 };
