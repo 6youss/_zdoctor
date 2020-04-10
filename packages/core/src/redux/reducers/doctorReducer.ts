@@ -13,14 +13,14 @@ const initState: IDoctor = {
   reservationType: "time",
   sessionDurations: [
     {
-      from: new Date(new Date().setUTCHours(8)),
+      from: new Date(new Date().setUTCHours(8)).toISOString(),
       to: null,
       duration: 30,
     },
   ],
   workingHours: [
     {
-      from: new Date(),
+      from: new Date().toISOString(),
       to: null,
       opensAt: ZTime.timeStringToMinutes("08:00"),
       closesAt: ZTime.timeStringToMinutes("17:00"),
