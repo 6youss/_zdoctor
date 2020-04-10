@@ -23,7 +23,7 @@ export function isDateInRange(date: Date, from: Date, to: Date | null, ignoreTim
   return _date.getTime() >= _from.getTime() && (_to === null || _date.getTime() <= _to.getTime());
 }
 
-export function dateRange(startDate: Date, dayCount: number): Array<Date> {
+export function makeDateRange(startDate: Date, dayCount: number): Array<Date> {
   var dateArray = new Array();
   var stopDate = addDays(startDate, dayCount);
   var currentDate = startDate;

@@ -16,6 +16,7 @@ import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
 import CalendarContainer from "../../components/CalendarContainer";
 import { ZTime } from "../../utils/ztime";
+import { mergeDateRanges } from "../../components/SessionPicker/helpers";
 
 const DoctorAvailablities: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,9 @@ const DoctorAvailablities: React.FC = () => {
   const accessToken = useSelector(tokenSelector);
   const sessions = useSelector(sessionsSelector);
   const [currentDay, setCurrentDay] = React.useState<Date>(new Date());
-  const [editedUnavailibities, setEditedUnavailibities] = React.useState<IDoctor["unavailablities"]>([]);
+  const [editedUnavailibities, setEditedUnavailibities] = React.useState<IDoctor["unavailablities"]>(
+    JSON.parse(JSON.stringify(doctor.unavailablities))
+  );
   const { navigate } = useUnifiedNavigation();
   const alert = useAlert();
   React.useEffect(() => {
@@ -43,10 +46,10 @@ const DoctorAvailablities: React.FC = () => {
   const handleHourPress: onHourPressFunction = (time: ZTime) => {
     let newEditedUnavailibities = [...editedUnavailibities];
     newEditedUnavailibities.push({
-      from: time.date,
-      to: addMinutes(time.date, 29),
+      from: time.date.toISOString(),
+      to: addMinutes(time.date, 29).toISOString(),
     });
-    setEditedUnavailibities(newEditedUnavailibities);
+    setEditedUnavailibities(mergeDateRanges(newEditedUnavailibities, doctor.sessionDurations));
   };
 
   function handleRightPress() {
