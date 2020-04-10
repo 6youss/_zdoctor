@@ -13,20 +13,25 @@ export interface IDoctor {
   lastName: string;
   phone: string;
   address: string;
-  unavailablities: Array<DateRange>;
+  unavailablities: Array<ClosedDateRange>;
   workingHours: Array<WorkingHours>;
   sessionDurations: Array<SessionDuration>;
   reservationType: ReservationType;
 }
-export interface DateRange {
-  from: Date;
-  to: Date | null;
+export interface ClosedDateRange {
+  from: string;
+  to: string;
 }
-export interface SessionDuration extends DateRange {
+
+export interface OpenedDateRange {
+  from: string;
+  to: string | null;
+}
+export interface SessionDuration extends OpenedDateRange {
   duration: number;
 }
 
-export interface WorkingHours extends DateRange {
+export interface WorkingHours extends OpenedDateRange {
   opensAt: number;
   closesAt: number;
 }

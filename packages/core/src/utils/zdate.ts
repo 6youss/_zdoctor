@@ -1,7 +1,3 @@
-interface DateRange {
-  from: Date;
-  to: Date | null;
-}
 export function addMinutes(date: Date, minutes: number) {
   return new Date(date.getTime() + minutes * 60 * 1000);
 }
@@ -12,31 +8,6 @@ export function timeToMinutes(date: Date): number {
 
 export function isNumberInRange(num: number, from: number, to: number): boolean {
   return num >= from && num <= to;
-}
-
-export function concatDateRanges(dateRanges: Array<DateRange>): Array<DateRange> {
-  dateRanges.sort((unv1, unv2) => {
-    if (unv1.from < unv2.from) return -1;
-    if (unv1.from > unv2.from) return 1;
-    return 0;
-  });
-
-  console.log({ dateRanges });
-
-  let normalizedIntervals = [];
-
-  let concatRange = dateRanges[0];
-  for (let i = 1; i < dateRanges.length; i++) {
-    let currentRange = dateRanges[i];
-    if (concatRange.to === currentRange.from) {
-      concatRange.to = currentRange.to;
-    } else {
-      normalizedIntervals.push({ ...concatRange });
-      concatRange = { ...currentRange };
-    }
-  }
-  normalizedIntervals.push({ ...concatRange });
-  return normalizedIntervals;
 }
 
 export function isDateInRange(date: Date, from: Date, to: Date | null, ignoreTime: boolean = true): boolean {

@@ -1,4 +1,4 @@
-import { IDoctor } from "../../../../../@types";
+import { IDoctor, ClosedDateRange } from "../../../../../@types";
 import { isDateInRange } from "../../utils/zdate";
 import { ZTime } from "../../utils/ztime";
 import {
@@ -9,6 +9,39 @@ import {
   DEFAULT_ENDING_HOUR,
 } from ".";
 type IWorkHours = { startingHour: number; endingHour: number };
+
+export function mergeDateRanges(
+  dateRanges: Array<ClosedDateRange>,
+  sessionDurations: IDoctor["sessionDurations"]
+): Array<ClosedDateRange> {
+  dateRanges.sort((unv1, unv2) => {
+    if (unv1.from < unv2.from) return -1;
+    if (unv1.from > unv2.from) return 1;
+    return 0;
+  });
+
+  let mergedRangeResults = [];
+
+  let mergedRange = dateRanges[0];
+
+  for (let i = 1; i < dateRanges.length; i++) {
+    let currentRange = dateRanges[i];
+    let sessionDuration = getSessionDuration(sessionDurations, new Date(currentRange.from), DEFAULT_SESSION_DURATION);
+
+    if (!enoughTimeForSession(mergedRange.to, currentRange.from, sessionDuration)) {
+      mergedRange.to = currentRange.to;
+    } else {
+      mergedRangeResults.push({ ...mergedRange });
+      mergedRange = { ...currentRange };
+    }
+  }
+  mergedRangeResults.push({ ...mergedRange });
+  return mergedRangeResults;
+}
+
+function enoughTimeForSession(begining: string, end: string, sessionDurationMinutes: number): boolean {
+  return (new Date(end).getTime() - new Date(begining).getTime()) / 1000 / 60 >= sessionDurationMinutes;
+}
 
 export function getWorkHours(
   workingHours: IDoctor["workingHours"],
@@ -21,7 +54,7 @@ export function getWorkHours(
     endingHour: defaultEndingHour,
   };
   for (let wh of workingHours) {
-    if (isDateInRange(date, wh.from, wh.to)) {
+    if (isDateInRange(date, new Date(wh.from), wh.to ? new Date(wh.to) : null)) {
       range.startingHour = wh.opensAt;
       range.endingHour = wh.closesAt;
     }
@@ -36,7 +69,7 @@ export function getSessionDuration(
 ): number {
   let sessionDuration = defaultSessionDuration;
   for (let sd of sessionDurations) {
-    if (isDateInRange(date, sd.from, sd.to)) {
+    if (isDateInRange(date, new Date(sd.from), sd.to ? new Date(sd.to) : null)) {
       sessionDuration = sd.duration;
     }
   }
@@ -66,7 +99,14 @@ export function filterHours(
     let isUnavailableHour = false;
     for (let unavailablity of unavailablitites) {
       const sessionDateWithTime = new Date(sessionDate.setUTCHours(_hour.hours, _hour.minutes, 0, 0));
-      if (isDateInRange(sessionDateWithTime, unavailablity.from, unavailablity.to, false)) {
+      if (
+        isDateInRange(
+          sessionDateWithTime,
+          new Date(unavailablity.from),
+          unavailablity.to ? new Date(unavailablity.to) : null,
+          false
+        )
+      ) {
         isUnavailableHour = true;
         break;
       }
