@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { doctorSelector, tokenSelector, sessionsSelector } from "../../redux/selectors";
 import { ScreenContainer, Avatar, Touchable } from "../../components";
 import SessionPicker, { onHourPressFunction } from "../../components/SessionPicker";
-import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
+import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
 import { Colors, bigShadow, isWeb } from "../../utils/values";
 import { addDays } from "../../utils/zdate";
@@ -28,7 +28,7 @@ const DoctorCalendar: React.FC = () => {
   function fetchSessions() {
     getDoctorSessions(accessToken, doctor._id)
       .then((sessions) => {
-        dispatch(setSearchedDoctorSessionsAction(sessions));
+        dispatch(searchedDoctorSessionsAction(sessions));
       })
       .catch((error) => {
         alert("Oops!", error.message);

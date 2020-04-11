@@ -1,40 +1,43 @@
 export class ZTime {
   private _date: Date;
+  private _datestring: string;
   private _hours: number = 0;
   private _minutes: number = 0;
+  private _id?: string | undefined;
+  private _unavailable?: boolean | undefined;
 
-  constructor(
-    private _datestring: string,
-    private _id?: string | undefined,
-    private _unavailable?: boolean | undefined
-  ) {
+  constructor(_datestring: string, _id?: ZTime["_id"], _unavailable?: ZTime["_unavailable"]) {
     this._datestring = _datestring;
+    this._id = _id;
+    this._unavailable = _unavailable;
     this._date = new Date(this._datestring);
     this._hours = this._date.getUTCHours();
     this._minutes = this._date.getUTCMinutes();
   }
 
-  set unavailable(unavailable: boolean | undefined) {
-    this._unavailable = unavailable;
+  get id(): string | undefined {
+    return this._id;
+  }
+  set id(id: string | undefined) {
+    this._id = id;
   }
   get unavailable(): boolean | undefined {
     return this._unavailable;
   }
-
+  set unavailable(unavailable: boolean | undefined) {
+    this._unavailable = unavailable;
+  }
   get date(): Date {
     return this._date;
+  }
+  get dateString(): string {
+    return this._datestring;
   }
   get hours(): number {
     return this._hours;
   }
   get minutes(): number {
     return this._minutes;
-  }
-  get id(): string | undefined {
-    return this._id;
-  }
-  set id(id: string | undefined) {
-    this._id = id;
   }
 
   addDuration(duration: number): ZTime {

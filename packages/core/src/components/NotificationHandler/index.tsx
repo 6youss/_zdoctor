@@ -5,7 +5,7 @@ import { tokenSelector, doctorSelector } from "../../redux/selectors";
 import { postDevice } from "../../api/user";
 import { Platform } from "react-native";
 import { getDoctorSessions } from "../../api/sessions";
-import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
+import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 const NotificationHandler: React.FC = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector(tokenSelector);
@@ -31,7 +31,7 @@ const NotificationHandler: React.FC = () => {
   const notificationHandler = React.useCallback(
     async function (message: FirebaseMessagingTypes.RemoteMessage) {
       if (message.data && message.data.type === "NEW_SESSION") {
-        dispatch(setSearchedDoctorSessionsAction(await getDoctorSessions(accessToken, doctor._id)));
+        dispatch(searchedDoctorSessionsAction(await getDoctorSessions(accessToken, doctor._id)));
       }
     },
     [doctor]

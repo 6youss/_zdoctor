@@ -5,8 +5,8 @@ import styles from "./styles";
 import { useSelector, useDispatch } from "react-redux";
 import { doctorSelector, tokenSelector, sessionsSelector } from "../../redux/selectors";
 import { ScreenContainer, Avatar, Touchable, Button } from "../../components";
-import SessionPicker, { onHourPressFunction } from "../../components/SessionPicker";
-import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
+import SessionPicker, { onHourPressFunction, DEFAULT_SESSION_DURATION } from "../../components/SessionPicker";
+import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
 import { Colors, isWeb } from "../../utils/values";
 import { addDays, addMinutes } from "../../utils/zdate";
@@ -16,7 +16,8 @@ import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
 import CalendarContainer from "../../components/CalendarContainer";
 import { ZTime } from "../../utils/ztime";
-import { mergeDateRanges } from "../../components/SessionPicker/helpers";
+import { mergeDateRanges, splitDateRanges, getSessionDuration } from "../../components/SessionPicker/helpers";
+import { patchDoctor } from "../../api/doctor";
 
 const DoctorAvailablities: React.FC = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const DoctorAvailablities: React.FC = () => {
   function fetchSessions() {
     getDoctorSessions(accessToken, doctor._id)
       .then((sessions) => {
-        dispatch(setSearchedDoctorSessionsAction(sessions));
+        dispatch(searchedDoctorSessionsAction(sessions));
       })
       .catch((error) => {
         alert("Oops!", error.message);
@@ -44,12 +45,19 @@ const DoctorAvailablities: React.FC = () => {
   }
 
   const handleHourPress: onHourPressFunction = (time: ZTime) => {
+    const duration = getSessionDuration(doctor.sessionDurations, time.date, DEFAULT_SESSION_DURATION);
+    const pressedRange = {
+      from: time.dateString,
+      to: addMinutes(time.date, duration - 1).toISOString(),
+    };
     let newEditedUnavailibities = [...editedUnavailibities];
-    newEditedUnavailibities.push({
-      from: time.date.toISOString(),
-      to: addMinutes(time.date, 29).toISOString(),
-    });
-    setEditedUnavailibities(mergeDateRanges(newEditedUnavailibities, doctor.sessionDurations));
+    const allreadyUnvlbl = newEditedUnavailibities.findIndex((range) => range.from === time.date.toISOString());
+    if (allreadyUnvlbl > -1) {
+      newEditedUnavailibities = splitDateRanges(newEditedUnavailibities, pressedRange);
+    } else {
+      newEditedUnavailibities.push(pressedRange);
+    }
+    setEditedUnavailibities(newEditedUnavailibities);
   };
 
   function handleRightPress() {
@@ -59,7 +67,19 @@ const DoctorAvailablities: React.FC = () => {
     setCurrentDay(addDays(currentDay, -3));
   }
 
-  const unavailablitiesConcat = doctor.unavailablities.concat(editedUnavailibities);
+  // const unavailablitiesConcat = doctor.unavailablities.concat(editedUnavailibities);
+
+  function submit() {
+    patchDoctor(accessToken, doctor._id, {
+      unavailablities: mergeDateRanges(editedUnavailibities, doctor.sessionDurations),
+    })
+      .then((doctor) => {
+        alert("success !", "disponibilités definies avec success");
+      })
+      .catch((err) => {
+        alert("Erreur", err.message);
+      });
+  }
 
   return (
     <ScreenContainer
@@ -89,7 +109,7 @@ const DoctorAvailablities: React.FC = () => {
             filterMode="both"
             currentDate={currentDay}
             allreadyTakenHours={sessions}
-            unavailablitites={unavailablitiesConcat}
+            unavailablitites={editedUnavailibities}
             workingHours={doctor.workingHours}
             sessionDurations={doctor.sessionDurations}
             onHourPress={handleHourPress}
@@ -100,7 +120,7 @@ const DoctorAvailablities: React.FC = () => {
         </CalendarContainer>
       </View>
       <View style={{ flexDirection: "row-reverse", paddingHorizontal: isWeb ? "5%" : 0, paddingVertical: 20 }}>
-        <Button style={{ marginHorizontal: 20, width: 100 }} text="Définir" onPress={() => {}} />
+        <Button style={{ marginHorizontal: 20, width: 100 }} text="Confirmer" onPress={submit} />
       </View>
     </ScreenContainer>
   );

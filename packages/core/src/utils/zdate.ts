@@ -1,6 +1,9 @@
 export function addMinutes(date: Date, minutes: number) {
   return new Date(date.getTime() + minutes * 60 * 1000);
 }
+export function dateStringaddMinutes(date: string, minutes: number): string {
+  return addMinutes(new Date(date), minutes).toISOString();
+}
 
 export function timeToMinutes(date: Date): number {
   return date.getUTCHours() * 60 + date.getUTCMinutes();

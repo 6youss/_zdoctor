@@ -9,7 +9,7 @@ import {
   DoctorProfile,
   SessionDetail,
   PatientProfile,
-  DoctorAvailablities
+  DoctorAvailablities,
 } from "../screens";
 
 interface RouterProps {
@@ -29,23 +29,23 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
           </>
         ) : needAuth ? (
           <>
-            <Redirect from="*" to="/login" />
             <Route exact path="/login" component={Login} />
+            <Redirect from="*" to="/login" />
           </>
         ) : userType === "patient" ? (
           <>
-            <Redirect from="*" to="/patient/find-doctor" />
             <Route exact path="/patient/find-doctor" component={FindDoctor} />
             <Route exact path="/patient/reservation" component={ReservationCalendar} />
             <Route exact path="/patient/profile" component={PatientProfile} />
+            <Redirect from="*" to="/patient/find-doctor" />
           </>
         ) : (
           <>
-            <Redirect from="*" to="/doctor/calendar" />
             <Route exact path="/doctor/calendar" component={DoctorCalendar} />
             <Route exact path="/doctor/profile" component={DoctorProfile} />
             <Route exact path="/doctor/availablities" component={DoctorAvailablities} />
             <Route exact path="/doctor/session/:id" component={SessionDetail} />
+            <Redirect from="*" to="/doctor/calendar" />
           </>
         )}
       </Switch>

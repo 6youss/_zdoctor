@@ -1,5 +1,5 @@
 import { IDoctor, ClosedDateRange } from "../../../../../@types";
-import { isDateInRange } from "../../utils/zdate";
+import { isDateInRange, dateStringaddMinutes } from "../../utils/zdate";
 import { ZTime } from "../../utils/ztime";
 import {
   ZSessionsMap,
@@ -10,15 +10,89 @@ import {
 } from ".";
 type IWorkHours = { startingHour: number; endingHour: number };
 
-export function mergeDateRanges(
-  dateRanges: Array<ClosedDateRange>,
-  sessionDurations: IDoctor["sessionDurations"]
-): Array<ClosedDateRange> {
+type IRangeToRangeStatus = "IN_LEFT" | "IN_RIGHT" | "OUT" | "IN" | "REF_IN";
+
+function rangeToRangeStatus(refRange: ClosedDateRange, range: ClosedDateRange): IRangeToRangeStatus {
+  const refRangeStart = new Date(refRange.from).getTime(),
+    refRangeEnd = new Date(refRange.to).getTime(),
+    rangeStart = new Date(range.from).getTime(),
+    rangeEnd = new Date(range.to).getTime();
+  if (rangeStart >= refRangeStart && rangeEnd <= refRangeEnd) {
+    return "IN";
+  }
+  if (rangeStart <= refRangeStart && rangeEnd >= refRangeStart && rangeEnd <= refRangeEnd) {
+    return "IN_LEFT";
+  }
+  if (rangeStart >= refRangeStart && rangeEnd >= refRangeEnd && rangeStart <= refRangeEnd) {
+    return "IN_RIGHT";
+  }
+  if (rangeStart >= refRangeEnd || rangeEnd <= refRangeStart) {
+    return "OUT";
+  }
+  if (rangeStart <= refRangeStart && rangeEnd >= refRangeEnd) {
+    return "REF_IN";
+  }
+  return "IN";
+}
+
+export function splitDateRanges(ranges: Array<ClosedDateRange>, cutRange: ClosedDateRange): Array<ClosedDateRange> {
+  sortByDate(ranges);
+  let splitresult: Array<ClosedDateRange> = [];
+
+  for (let i = 0; i < ranges.length; i++) {
+    let currentRange = ranges[i];
+    const status = rangeToRangeStatus(cutRange, currentRange);
+    console.log(status);
+    switch (status) {
+      case "IN":
+        continue;
+      case "IN_LEFT":
+        splitresult.push({
+          from: currentRange.from,
+          to: dateStringaddMinutes(cutRange.from, -1),
+        });
+        break;
+      case "IN_RIGHT":
+        splitresult.push({
+          from: dateStringaddMinutes(cutRange.to, 1),
+          to: currentRange.to,
+        });
+        break;
+      case "OUT":
+        splitresult.push({
+          ...currentRange,
+        });
+        break;
+      case "REF_IN":
+        splitresult.push({
+          from: currentRange.from,
+          to: dateStringaddMinutes(cutRange.from, -1),
+        });
+        splitresult.push({
+          from: dateStringaddMinutes(cutRange.to, 1),
+          to: currentRange.to,
+        });
+        break;
+      default:
+        break;
+    }
+  }
+  return splitresult;
+}
+
+export function sortByDate(dateRanges: Array<ClosedDateRange>) {
   dateRanges.sort((unv1, unv2) => {
     if (unv1.from < unv2.from) return -1;
     if (unv1.from > unv2.from) return 1;
     return 0;
   });
+}
+
+export function mergeDateRanges(
+  dateRanges: Array<ClosedDateRange>,
+  sessionDurations: IDoctor["sessionDurations"]
+): Array<ClosedDateRange> {
+  sortByDate(dateRanges);
 
   let mergedRangeResults = [];
 

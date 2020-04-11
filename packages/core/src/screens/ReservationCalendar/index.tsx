@@ -10,7 +10,7 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { doctorSelector, patientSelector, tokenSelector, sessionsSelector } from "../../redux/selectors";
 import { postSession, getDoctorSessions } from "../../api/sessions";
 import { addDays } from "../../utils/zdate";
-import { setSearchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
+import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { Colors, bigShadow, isWeb } from "../../utils/values";
 import GoBack from "../../components/GoBack";
 import { fetchDoctorByPhone } from "../../api/doctor";
@@ -35,7 +35,7 @@ const ReserveSession: React.FC = () => {
   async function fetchSessions() {
     try {
       const sessions = await getDoctorSessions(accessToken, doctor._id);
-      dispatch(setSearchedDoctorSessionsAction(sessions));
+      dispatch(searchedDoctorSessionsAction(sessions));
       const doctorDetails = await fetchDoctorByPhone(doctor.phone);
       dispatch(setDoctorAction(doctorDetails));
     } catch (error) {
