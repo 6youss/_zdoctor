@@ -4,13 +4,12 @@ import styles from "./styles";
 
 import { useSelector, useDispatch } from "react-redux";
 import { doctorSelector, tokenSelector, sessionsSelector } from "../../redux/selectors";
-import { ScreenContainer, Avatar, Touchable, Button } from "../../components";
+import { ScreenContainer, Avatar, Touchable, Button, GoBack } from "../../components";
 import SessionPicker, { onHourPressFunction, DEFAULT_SESSION_DURATION } from "../../components/SessionPicker";
 import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
 import { Colors, isWeb } from "../../utils/values";
 import { addDays, addMinutes } from "../../utils/zdate";
-
 import { IDoctor } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
@@ -29,7 +28,7 @@ const DoctorAvailablities: React.FC = () => {
   const [editedUnavailibities, setEditedUnavailibities] = React.useState<IDoctor["unavailablities"]>(
     JSON.parse(JSON.stringify(doctor.unavailablities))
   );
-  const { navigate } = useUnifiedNavigation();
+  const { navigate, goBack } = useUnifiedNavigation();
   const alert = useAlert();
   React.useEffect(() => {
     fetchSessions();
@@ -89,21 +88,29 @@ const DoctorAvailablities: React.FC = () => {
       safeArea={{ style: { backgroundColor: Colors.white, paddingHorizontal: 0 } }}
     >
       <View style={{ flex: 1, paddingHorizontal: isWeb ? "5%" : 0 }}>
-        <View style={styles.header}>
-          <Text style={styles.calendarTitle}>Disponibilités</Text>
-          <Touchable
-            borderRadius={30}
+        <View style={{ marginHorizontal: 20, marginTop: 15, marginBottom: 15 }}>
+          <GoBack
             onPress={() => {
-              if (isWeb) {
-                navigate("/doctor/profile");
-              } else {
-                navigate("DoctorProfile");
-              }
+              goBack();
             }}
-            style={{ justifyContent: "center", alignItems: "center" }}
           >
-            <Avatar radius={35} style={{ margin: 5 }} />
-          </Touchable>
+            <Text style={styles.calendarTitle}>
+              <Text style={{ fontWeight: "100" }}>{`Définir vos disponibilités`}</Text>
+            </Text>
+            <Touchable
+              borderRadius={30}
+              onPress={() => {
+                if (isWeb) {
+                  navigate("/doctor/profile");
+                } else {
+                  navigate("DoctorProfile");
+                }
+              }}
+              style={{ justifyContent: "center", alignItems: "center" }}
+            >
+              <Avatar radius={35} style={{ margin: 5 }} />
+            </Touchable>
+          </GoBack>
         </View>
 
         <CalendarContainer>
