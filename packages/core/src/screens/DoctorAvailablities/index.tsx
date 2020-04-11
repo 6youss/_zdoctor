@@ -18,6 +18,7 @@ import CalendarContainer from "../../components/CalendarContainer";
 import { ZTime } from "../../utils/ztime";
 import { mergeDateRanges, splitDateRanges, getSessionDuration } from "../../components/SessionPicker/helpers";
 import { patchDoctor } from "../../api/doctor";
+import { setDoctorAction } from "../../redux/actions/doctorActions";
 
 const DoctorAvailablities: React.FC = () => {
   const dispatch = useDispatch();
@@ -71,9 +72,10 @@ const DoctorAvailablities: React.FC = () => {
 
   function submit() {
     patchDoctor(accessToken, doctor._id, {
-      unavailablities: mergeDateRanges(editedUnavailibities, doctor.sessionDurations),
+      unavailablities: editedUnavailibities,
     })
       .then((doctor) => {
+        dispatch(setDoctorAction(doctor));
         alert("success !", "disponibilités definies avec success");
       })
       .catch((err) => {
