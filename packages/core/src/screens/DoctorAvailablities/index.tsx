@@ -9,7 +9,7 @@ import SessionPicker, { onHourPressFunction, DEFAULT_SESSION_DURATION } from "..
 import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
 import { Colors, isWeb } from "../../utils/values";
-import { addDays, addMinutes } from "../../utils/zdate";
+import { addDays, addMinutes, isDateInRange } from "../../utils/zdate";
 import { IDoctor } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
@@ -50,14 +50,18 @@ const DoctorAvailablities: React.FC = () => {
       from: time.dateString,
       to: addMinutes(time.date, duration - 1).toISOString(),
     };
+    console.log(editedUnavailibities);
     let newEditedUnavailibities = [...editedUnavailibities];
-    const allreadyUnvlbl = newEditedUnavailibities.findIndex((range) => range.from === time.date.toISOString());
+    const allreadyUnvlbl = newEditedUnavailibities.findIndex((range) =>
+      isDateInRange(time.date, new Date(range.from), new Date(range.to), false)
+    );
+    console.log({ pressedRange, allreadyUnvlbl });
     if (allreadyUnvlbl > -1) {
       newEditedUnavailibities = splitDateRanges(newEditedUnavailibities, pressedRange);
     } else {
       newEditedUnavailibities.push(pressedRange);
     }
-    setEditedUnavailibities(newEditedUnavailibities);
+    setEditedUnavailibities(mergeDateRanges(newEditedUnavailibities, doctor.sessionDurations));
   };
 
   function handleRightPress() {
