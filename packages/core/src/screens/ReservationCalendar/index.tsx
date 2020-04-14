@@ -18,6 +18,7 @@ import { setDoctorAction } from "../../redux/actions/doctorActions";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
 import CalendarContainer from "../../components/CalendarContainer";
+import { routes } from "../../navigation/types";
 
 const ReserveSession: React.FC = () => {
   const dispatch = useDispatch();
@@ -92,11 +93,7 @@ const ReserveSession: React.FC = () => {
           <Touchable
             borderRadius={30}
             onPress={() => {
-              if (isWeb) {
-                navigate("/patient/profile");
-              } else {
-                navigate("PatientProfile");
-              }
+              navigate(routes.patientProfile);
             }}
             style={{ justifyContent: "center", alignItems: "center" }}
           >

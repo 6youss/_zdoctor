@@ -37,7 +37,7 @@ const DoctorProfile: React.FC = () => {
           position: "relative",
 
           marginHorizontal: 20,
-          elevation: 40
+          elevation: 40,
         }}
       >
         <View style={{ alignItems: "center" }}>
@@ -46,7 +46,7 @@ const DoctorProfile: React.FC = () => {
             style={{
               color: Colors.darkGray,
               fontWeight: "bold",
-              margin: 7
+              margin: 7,
             }}
           >{`Pr. ${doctor.firstName} ${doctor.lastName}`}</Text>
           <Text style={styles.addressText}>{`${doctor.address}`}</Text>
@@ -61,11 +61,7 @@ const DoctorProfile: React.FC = () => {
             text="Disponibilités"
             style={{ marginBottom: 20 }}
             onPress={() => {
-              if (isWeb) {
-                navigate("/doctor/availablities");
-              } else {
-                navigate("DoctorAvailablities");
-              }
+              navigate("/doctor/availablities");
             }}
           />
           <Button

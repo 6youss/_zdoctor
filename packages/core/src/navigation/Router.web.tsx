@@ -5,12 +5,14 @@ import {
   FindDoctor,
   ReservationCalendar,
   Login,
+  Signup,
   DoctorCalendar,
   DoctorProfile,
   SessionDetail,
   PatientProfile,
   DoctorAvailablities,
 } from "../screens";
+import { routes } from "./types";
 
 interface RouterProps {
   isLoading: boolean;
@@ -25,27 +27,28 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
         {isLoading ? (
           <>
             <Redirect from="*" to="/" />
-            <Route exact path="/" component={Splash} />
+            <Route exact path={routes.splash} component={Splash} />
           </>
         ) : needAuth ? (
           <>
-            <Route exact path="/login" component={Login} />
-            <Redirect from="*" to="/login" />
+            <Route exact path={routes.login} component={Login} />
+            <Route exact path={routes.signUp} component={Signup} />
+            <Redirect from="*" to={routes.login} />
           </>
         ) : userType === "patient" ? (
           <>
-            <Route exact path="/patient/find-doctor" component={FindDoctor} />
-            <Route exact path="/patient/reservation" component={ReservationCalendar} />
-            <Route exact path="/patient/profile" component={PatientProfile} />
-            <Redirect from="*" to="/patient/find-doctor" />
+            <Route exact path={routes.findDoctor} component={FindDoctor} />
+            <Route exact path={routes.patientReservation} component={ReservationCalendar} />
+            <Route exact path={routes.patientProfile} component={PatientProfile} />
+            <Redirect from="*" to={routes.findDoctor} />
           </>
         ) : (
           <>
-            <Route exact path="/doctor/calendar" component={DoctorCalendar} />
-            <Route exact path="/doctor/profile" component={DoctorProfile} />
-            <Route exact path="/doctor/availablities" component={DoctorAvailablities} />
-            <Route exact path="/doctor/session/:id" component={SessionDetail} />
-            <Redirect from="*" to="/doctor/calendar" />
+            <Route exact path={routes.doctorCalendar} component={DoctorCalendar} />
+            <Route exact path={routes.doctorProfile} component={DoctorProfile} />
+            <Route exact path={routes.doctorAvailibities} component={DoctorAvailablities} />
+            <Route exact path={routes.doctorSession} component={SessionDetail} />
+            <Redirect from="*" to={routes.doctorCalendar} />
           </>
         )}
       </Switch>

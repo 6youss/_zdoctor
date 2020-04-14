@@ -37,11 +37,7 @@ const DoctorCalendar: React.FC = () => {
 
   const handleDayPress: onHourPressFunction = (time) => {
     if (time.id) {
-      if (isWeb) {
-        navigate("/doctor/session/:id", { id: time.id });
-      } else {
-        navigate("SessionDetail", { id: time.id });
-      }
+      navigate("/doctor/session/:id", { id: time.id });
     } else {
       throw new Error("unexpected undefined session id");
     }
@@ -64,11 +60,7 @@ const DoctorCalendar: React.FC = () => {
         <Touchable
           borderRadius={30}
           onPress={() => {
-            if (isWeb) {
-              navigate("/doctor/profile");
-            } else {
-              navigate("DoctorProfile");
-            }
+            navigate("/doctor/profile");
           }}
           style={{ justifyContent: "center", alignItems: "center" }}
         >

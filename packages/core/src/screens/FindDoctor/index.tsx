@@ -58,11 +58,7 @@ const FindDoctor: React.FC = () => {
               <Touchable
                 borderRadius={30}
                 onPress={() => {
-                  if (isWeb) {
-                    navigate("/patient/profile");
-                  } else {
-                    navigate("PatientProfile");
-                  }
+                  navigate("/patient/profile");
                 }}
                 style={{ position: "absolute", right: 0, justifyContent: "center", alignItems: "center" }}
               >
@@ -90,11 +86,7 @@ const FindDoctor: React.FC = () => {
           <FoundDoctor
             {...foundDoctor}
             onPress={() => {
-              if (isWeb) {
-                navigate("/patient/reservation");
-              } else {
-                navigate("ReservationCalendar");
-              }
+              navigate("/patient/reservation");
             }}
           />
         ) : (

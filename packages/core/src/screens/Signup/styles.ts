@@ -20,10 +20,5 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     marginVertical: 20,
   },
-  signupText: {
-    textAlign: "center",
-    marginTop: 30,
-    color: Colors.white,
-  },
 });
 export default styles;

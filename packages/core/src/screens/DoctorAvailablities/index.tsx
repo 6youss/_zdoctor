@@ -104,11 +104,7 @@ const DoctorAvailablities: React.FC = () => {
             <Touchable
               borderRadius={30}
               onPress={() => {
-                if (isWeb) {
-                  navigate("/doctor/profile");
-                } else {
-                  navigate("DoctorProfile");
-                }
+                navigate("/doctor/profile");
               }}
               style={{ justifyContent: "center", alignItems: "center" }}
             >

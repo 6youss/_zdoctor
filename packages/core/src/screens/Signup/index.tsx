@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Text } from "react-native";
+import { View, Image } from "react-native";
 import { postLogin, getUser } from "../../api/user";
 import { useDispatch } from "react-redux";
 import { signInAction } from "../../redux/actions/userActions";
@@ -11,8 +11,6 @@ import { setDoctorAction } from "../../redux/actions/doctorActions";
 import { setPatientAction } from "../../redux/actions/patientActions";
 import { useAlert } from "../../components/Alert";
 import { logoWhite } from "../../assets";
-import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
-import { routes } from "../../navigation/types";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,7 +18,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [username, setUsername] = React.useState<string>(__DEV__ ? (false ? "doctor" : "patient") : "");
   const [password, setPassword] = React.useState<string>(__DEV__ ? "123456" : "");
-  const { navigate } = useUnifiedNavigation();
+
   function login() {
     setLoading(true);
     postLogin(username, password).then(
@@ -65,18 +63,7 @@ const Login: React.FC = () => {
           secureTextEntry
           onSubmitEditing={login}
         />
-        <Button onPress={login} text="S'identifié" light loading={loading} style={{ width: "100%", maxWidth: 400 }} />
-        <Text style={styles.signupText}>
-          {"Vous avez pas de compte ?  "}
-          <Text
-            onPress={() => {
-              navigate(routes.signUp);
-            }}
-            style={{ fontWeight: "bold" }}
-          >
-            S'inscrire
-          </Text>
-        </Text>
+        <Button onPress={login} text="S'inscrire" light loading={loading} style={{ width: "100%", maxWidth: 400 }} />
       </View>
     </ScreenContainer>
   );
