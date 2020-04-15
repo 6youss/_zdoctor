@@ -10,6 +10,11 @@ const styles = StyleSheet.create({
     width: "100%",
     color: Colors.primaryDark,
     maxWidth: 400,
+    marginVertical: 20,
+  },
+  defaultErrorStyle: {
+    marginTop: -15,
+    color: Colors.red,
   },
 });
 export default styles;

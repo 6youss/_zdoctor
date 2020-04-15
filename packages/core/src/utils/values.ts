@@ -16,6 +16,7 @@ export const Colors = {
   white: "#FFF",
   whiteTransparent: "#FFFC",
   black: "#000",
+  red: "#f00",
 };
 
 export const bigShadow = {

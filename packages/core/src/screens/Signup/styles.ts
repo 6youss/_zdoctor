@@ -6,8 +6,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: Colors.primary,
-    // justifyContent: "center",
-    // padding: 40,
   },
   loginLogo: {
     width: 30,
@@ -24,7 +22,6 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 20,
     fontWeight: "100",
-    marginVertical: 20,
   },
   activeUserType: {
     backgroundColor: Colors.primaryDark,

@@ -11,29 +11,26 @@ import { useAlert } from "../../components/Alert";
 import { logoWhite } from "../../assets";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { Title } from "../../components";
-import { IUser } from "../../../../../@types";
 import { Formik, FormikHelpers } from "formik";
-interface Values {
-  userName: string;
-  password: string;
-  confirmPassword: string;
-  userType: IUser["userType"];
-}
+import { SignupSchema } from "./schemas";
 
+import { InferType } from "yup";
+
+type SignupValues = InferType<typeof SignupSchema>;
+type SignupStep = 1 | 2;
 const Singunp: React.FC = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const { goBack } = useUnifiedNavigation();
-  const initialValues: Values = { userName: "", password: "", confirmPassword: "", userType: "patient" };
+  const initialValues: SignupValues = { userName: "", password: "", confirmPassword: "", userType: "patient" };
+  const [signupStep, setSignupStep] = React.useState<SignupStep>(1);
 
-  function onSubmit(values: Values, { setSubmitting }: FormikHelpers<Values>) {
-    console.log({ values });
-  }
+  function onSubmit(values: SignupValues, { setSubmitting }: FormikHelpers<SignupValues>) {}
 
   return (
     <ScreenContainer status={{ backgroundColor: Colors.primary }}>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
+      <Formik validationSchema={SignupSchema} initialValues={initialValues} onSubmit={onSubmit}>
+        {({ handleChange, handleSubmit, setFieldValue, values, errors }) => (
           <>
             <View style={{ paddingVertical: 30 }}>
               <GoBack color={Colors.white} onPress={goBack}>
@@ -43,6 +40,7 @@ const Singunp: React.FC = () => {
             </View>
             <View style={styles.container}>
               <Title> Créer votre compte </Title>
+
               <View>
                 <View style={{ marginTop: 20, flexDirection: "row", justifyContent: "flex-start" }}>
                   <Text style={{ fontSize: 20, fontWeight: "100", color: Colors.whiteTransparent }}>
@@ -69,15 +67,25 @@ const Singunp: React.FC = () => {
                   value={values.userName}
                   onChangeText={handleChange("userName")}
                   style={styles.loginInput}
-                  placeholder="Nom d'utilisateur"
+                  placeholder="Nom d'utilisateur*"
                   returnKeyType="next"
+                  error={errors.userName}
                 />
                 <Input
                   value={values.password}
                   onChangeText={handleChange("password")}
                   style={[styles.loginInput]}
-                  placeholder="Mot de passe"
+                  placeholder="Mot de passe*"
                   secureTextEntry
+                  error={errors.password}
+                />
+                <Input
+                  value={values.confirmPassword}
+                  onChangeText={handleChange("confirmPassword")}
+                  style={[styles.loginInput]}
+                  placeholder="Confirmation*"
+                  secureTextEntry
+                  error={errors.confirmPassword}
                 />
                 {/* <Button onPress={login} text="S'inscrire" light loading={loading} style={{ width: "100%", maxWidth: 400 }} /> */}
               </View>
