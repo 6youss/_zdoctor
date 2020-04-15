@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: Colors.primary,
     padding: 8,
+    paddingHorizontal: 20,
     minHeight: 40,
   },
   buttonText: {

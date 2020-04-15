@@ -7,3 +7,4 @@ export { default as FloatingButton } from "./FloatingButton";
 export { default as DoctorItem } from "./DoctorItem";
 export { default as Button } from "./Button";
 export { default as GoBack } from "./GoBack";
+export { default as Title } from "./Title";
