@@ -20,3 +20,7 @@ export function tokenSelector(store: RootState): string | undefined {
 export function userTypeSelector(store: RootState): "doctor" | "patient" {
   return store.user.userType;
 }
+
+export function loginPending(store: RootState): boolean {
+  return store.user.loading;
+}

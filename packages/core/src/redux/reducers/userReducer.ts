@@ -11,7 +11,7 @@ const initState: IUserStore = {
   userType: "patient",
   accessToken: undefined,
   refreshToken: undefined,
-  loading: true,
+  loading: false,
 };
 
 function reducer(prevState: IUserStore = initState, action: UserAction): IUserStore {

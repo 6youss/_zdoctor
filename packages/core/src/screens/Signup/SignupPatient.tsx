@@ -9,7 +9,8 @@ import { postSignup, postLogin, getUser } from "../../api/user";
 import { useDispatch } from "react-redux";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 import { setPatientAction } from "../../redux/actions/patientActions";
-import { signInAction } from "../../redux/actions/userActions";
+import { signInAction, login } from "../../redux/actions/userActions";
+import { AppDispatch } from "../../redux";
 
 interface SignupNextProps {
   previousValues: SignupValues;
@@ -17,28 +18,18 @@ interface SignupNextProps {
 
 const SingunpPatient: React.FC<SignupNextProps> = ({ previousValues }) => {
   const initialValues: SignupPatientValues = { firstName: "", lastName: "" };
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   function onSubmit(values: SignupPatientValues, { setSubmitting }: FormikHelpers<SignupPatientValues>) {
     setSubmitting(true);
     postSignup({ ...previousValues, profile: values })
       .then(async (res) => {
-        await login(previousValues.username, previousValues.password);
+        await dispatch(login(previousValues.username, previousValues.password));
       })
       .catch((err) => {
         console.log(err);
         setSubmitting(false);
       });
-  }
-  async function login(username: string, password: string) {
-    const user = await postLogin(username, password);
-    const userProfile = await getUser(user.accessToken);
-    if (user.userType === "doctor") {
-      dispatch(setDoctorAction(userProfile.doctor));
-    } else {
-      dispatch(setPatientAction(userProfile.patient));
-    }
-    dispatch(signInAction(user));
   }
 
   return (

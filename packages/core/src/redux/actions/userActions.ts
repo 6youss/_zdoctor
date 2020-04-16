@@ -15,7 +15,7 @@ export interface UserAction {
   payload: IUser | undefined;
 }
 
-export function login(username: string, password: string): AppThunk {
+export function login(username: string, password: string): AppThunk<Promise<void>> {
   return async (dispatch) => {
     try {
       dispatch({
@@ -32,6 +32,7 @@ export function login(username: string, password: string): AppThunk {
     } catch (error) {
       dispatch({
         type: UserActionTypes.SIGN_IN_REJECTED,
+        error: error,
       });
     }
   };

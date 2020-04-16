@@ -1,71 +1,67 @@
 import React from "react";
 import { View, Image, Text } from "react-native";
-import { postLogin, getUser } from "../../api/user";
-import { useDispatch } from "react-redux";
-import { signInAction } from "../../redux/actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
 import { ScreenContainer, Input } from "../../components";
 import Button from "../../components/Button";
 import { Colors } from "../../utils/values";
 import styles from "./styles";
-import { setDoctorAction } from "../../redux/actions/doctorActions";
-import { setPatientAction } from "../../redux/actions/patientActions";
 import { useAlert } from "../../components/Alert";
 import { logoWhite } from "../../assets";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { routes } from "../../navigation/types";
+import { loginPending } from "../../redux/selectors";
+import { login } from "../../redux/actions/userActions";
+import { AppDispatch } from "../../redux";
+import { SigninValues, SignInSchema } from "./schemas";
+import { Formik, FormikHelpers } from "formik";
 
 const Login: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const alert = useAlert();
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [username, setUsername] = React.useState<string>(__DEV__ ? (false ? "doctor" : "patient") : "");
-  const [password, setPassword] = React.useState<string>(__DEV__ ? "123456" : "");
+  const loading = useSelector(loginPending);
   const { navigate } = useUnifiedNavigation();
-  function login() {
-    setLoading(true);
-    postLogin(username, password).then(
-      async (user) => {
-        const userProfile = await getUser(user.accessToken);
-        if (user.userType === "doctor") {
-          dispatch(setDoctorAction(userProfile.doctor));
-        } else {
-          dispatch(setPatientAction(userProfile.patient));
-        }
-        dispatch(signInAction(user));
-        setLoading(false);
-      },
-      (error) => {
-        alert("Oops!", error.message);
-        setLoading(false);
-      }
-    );
-  }
+  const initialValues: SigninValues = { username: "", password: "" };
 
+  function onSubmit(values: SigninValues, { setSubmitting }: FormikHelpers<SigninValues>) {
+    dispatch(login(values.username, values.password)).catch((err) => {
+      alert("Erreur", err.message);
+    });
+  }
   return (
     <ScreenContainer status={{ backgroundColor: Colors.primary }}>
       <View style={styles.container}>
         <Image style={styles.loginLogo} resizeMode="contain" source={logoWhite} />
+        <Formik validationSchema={SignInSchema} initialValues={initialValues} onSubmit={onSubmit}>
+          {({ handleChange, handleSubmit, values, errors, touched }) => (
+            <>
+              <Input
+                value={values.username}
+                onChangeText={handleChange("username")}
+                style={styles.loginInput}
+                placeholder="Addresse email"
+                returnKeyType="next"
+                error={touched.username && errors.username ? errors.username : undefined}
+              />
 
-        <Input
-          value={username}
-          onChangeText={(text) => {
-            setUsername(text);
-          }}
-          style={styles.loginInput}
-          placeholder="Nom d'utilisateur"
-          returnKeyType="next"
-        />
-        <Input
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-          }}
-          style={[styles.loginInput, { marginBottom: 40 }]}
-          placeholder="Mot de passe"
-          secureTextEntry
-          onSubmitEditing={login}
-        />
-        <Button onPress={login} text="S'identifié" light loading={loading} style={{ width: "100%", maxWidth: 400 }} />
+              <Input
+                value={values.password}
+                onChangeText={handleChange("password")}
+                style={[styles.loginInput]}
+                placeholder="Mot de passe"
+                secureTextEntry
+                onSubmitEditing={() => handleSubmit()}
+                error={touched.password && errors.password ? errors.password : undefined}
+              />
+              <Button
+                onPress={handleSubmit}
+                text="S'identifié"
+                light
+                loading={loading}
+                style={{ width: "100%", maxWidth: 400, marginTop: 30 }}
+              />
+            </>
+          )}
+        </Formik>
         <Text style={styles.signupText}>
           {"Vous avez pas de compte ?  "}
           <Text

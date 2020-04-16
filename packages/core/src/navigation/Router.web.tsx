@@ -33,7 +33,7 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
           <>
             <Route exact path={routes.login} component={Login} />
             <Route exact path={routes.signUp} component={Signup} />
-            <Redirect from="*" to={routes.signUp} />
+            <Redirect from="*" to={routes.login} />
           </>
         ) : userType === "patient" ? (
           <>
