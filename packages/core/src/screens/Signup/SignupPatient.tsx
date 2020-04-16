@@ -1,25 +1,44 @@
 import React from "react";
-import { View, Image, Text } from "react-native";
-
+import { View } from "react-native";
 import Button from "../../components/Button";
-import { Colors, isWeb } from "../../utils/values";
 import styles from "./styles";
-
-import { logoWhite } from "../../assets";
-
-import { Title, Touchable, Input } from "../../components";
+import { Input } from "../../components";
 import { Formik, FormikHelpers } from "formik";
-import { PatientSchema } from "./schemas";
+import { PatientSchema, SignupPatientValues, SignupValues } from "./schemas";
+import { postSignup, postLogin, getUser } from "../../api/user";
+import { useDispatch } from "react-redux";
+import { setDoctorAction } from "../../redux/actions/doctorActions";
+import { setPatientAction } from "../../redux/actions/patientActions";
+import { signInAction } from "../../redux/actions/userActions";
 
-import { InferType } from "yup";
+interface SignupNextProps {
+  previousValues: SignupValues;
+}
 
-type SignupValues = InferType<typeof PatientSchema>;
+const SingunpPatient: React.FC<SignupNextProps> = ({ previousValues }) => {
+  const initialValues: SignupPatientValues = { firstName: "", lastName: "" };
+  const dispatch = useDispatch();
 
-const SingunpDoctor: React.FC = () => {
-  const initialValues: SignupValues = { firstName: "", lastName: "" };
-
-  function onSubmit(values: SignupValues, { setSubmitting }: FormikHelpers<SignupValues>) {
+  function onSubmit(values: SignupPatientValues, { setSubmitting }: FormikHelpers<SignupPatientValues>) {
     setSubmitting(true);
+    postSignup({ ...previousValues, profile: values })
+      .then(async (res) => {
+        await login(previousValues.username, previousValues.password);
+      })
+      .catch((err) => {
+        console.log(err);
+        setSubmitting(false);
+      });
+  }
+  async function login(username: string, password: string) {
+    const user = await postLogin(username, password);
+    const userProfile = await getUser(user.accessToken);
+    if (user.userType === "doctor") {
+      dispatch(setDoctorAction(userProfile.doctor));
+    } else {
+      dispatch(setPatientAction(userProfile.patient));
+    }
+    dispatch(signInAction(user));
   }
 
   return (
@@ -55,4 +74,4 @@ const SingunpDoctor: React.FC = () => {
   );
 };
 
-export default SingunpDoctor;
+export default SingunpPatient;

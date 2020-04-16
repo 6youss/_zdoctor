@@ -1,40 +1,36 @@
 import React from "react";
 import { View, Image, Text } from "react-native";
-import { postLogin, getUser } from "../../api/user";
 import { useDispatch } from "react-redux";
-import { signInAction } from "../../redux/actions/userActions";
 import { ScreenContainer, Input, GoBack, Touchable } from "../../components";
 import Button from "../../components/Button";
-import { Colors, isWeb } from "../../utils/values";
+import { Colors } from "../../utils/values";
 import styles from "./styles";
 import { useAlert } from "../../components/Alert";
 import { logoWhite } from "../../assets";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { Title } from "../../components";
 import { Formik, FormikHelpers } from "formik";
-import { SignupSchema } from "./schemas";
-import { InferType } from "yup";
-
+import { SignupSchema, SignupValues } from "./schemas";
 import SignupDoctor from "./SignupDoctor";
 import SignupPatient from "./SignupPatient";
 
-type SignupValues = InferType<typeof SignupSchema>;
 type ISignupStep = 1 | 2;
+
 const Singunp: React.FC = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const { goBack } = useUnifiedNavigation();
-  const initialValues: SignupValues = { userName: "", password: "", confirmPassword: "", userType: "patient" };
+  const initialValues: SignupValues = { username: "", password: "", confirmPassword: "", userType: "patient" };
   const [step, setStep] = React.useState<ISignupStep>(1);
 
-  function onSubmit(values: SignupValues, { setSubmitting }: FormikHelpers<SignupValues>) {
+  function onNext(values: SignupValues, { setSubmitting }: FormikHelpers<SignupValues>) {
     setStep(2);
   }
 
   return (
     <ScreenContainer status={{ backgroundColor: Colors.primary }}>
-      <Formik validationSchema={SignupSchema} initialValues={initialValues} onSubmit={onSubmit}>
-        {({ handleChange, handleSubmit, setFieldValue, values, errors }) => (
+      <Formik validationSchema={SignupSchema} initialValues={initialValues} onSubmit={onNext}>
+        {({ handleChange, handleSubmit, setFieldValue, values, errors, touched }) => (
           <>
             <View style={{ paddingVertical: 30 }}>
               <GoBack
@@ -47,7 +43,7 @@ const Singunp: React.FC = () => {
                 }}
               >
                 <Image style={styles.loginLogo} resizeMode="contain" source={logoWhite} />
-                <Button text="Suivant" onPress={handleSubmit} light />
+                {step === 1 && <Button text="Suivant" onPress={handleSubmit} light />}
               </GoBack>
             </View>
             <View style={styles.container}>
@@ -77,12 +73,12 @@ const Singunp: React.FC = () => {
                     </Text>
                   </View>
                   <Input
-                    value={values.userName}
-                    onChangeText={handleChange("userName")}
+                    value={values.username}
+                    onChangeText={handleChange("username")}
                     style={styles.loginInput}
-                    placeholder="Nom d'utilisateur*"
+                    placeholder="Adresse email*"
                     returnKeyType="next"
-                    error={errors.userName}
+                    error={touched.username && errors.username ? errors.username : undefined}
                   />
                   <Input
                     value={values.password}
@@ -90,7 +86,7 @@ const Singunp: React.FC = () => {
                     style={[styles.loginInput]}
                     placeholder="Mot de passe*"
                     secureTextEntry
-                    error={errors.password}
+                    error={touched.password && errors.password ? errors.password : undefined}
                   />
                   <Input
                     value={values.confirmPassword}
@@ -98,14 +94,13 @@ const Singunp: React.FC = () => {
                     style={[styles.loginInput]}
                     placeholder="Confirmation*"
                     secureTextEntry
-                    error={errors.confirmPassword}
+                    error={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
                   />
-                  {/* <Button onPress={login} text="S'inscrire" light loading={loading} style={{ width: "100%", maxWidth: 400 }} /> */}
                 </View>
               ) : values.userType === "patient" ? (
-                <SignupPatient />
+                <SignupPatient previousValues={values} />
               ) : (
-                <SignupDoctor />
+                <SignupDoctor previousValues={values} />
               )}
             </View>
           </>

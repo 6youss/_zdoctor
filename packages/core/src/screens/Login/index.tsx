@@ -25,7 +25,7 @@ const Login: React.FC = () => {
     setLoading(true);
     postLogin(username, password).then(
       async (user) => {
-        const userProfile = await getUser(user.accessToken ?? "");
+        const userProfile = await getUser(user.accessToken);
         if (user.userType === "doctor") {
           dispatch(setDoctorAction(userProfile.doctor));
         } else {

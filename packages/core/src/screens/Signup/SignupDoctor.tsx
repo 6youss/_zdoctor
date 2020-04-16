@@ -1,24 +1,17 @@
 import React from "react";
-import { View, Image, Text } from "react-native";
-
+import { View } from "react-native";
 import Button from "../../components/Button";
-import { Colors, isWeb } from "../../utils/values";
 import styles from "./styles";
-
-import { logoWhite } from "../../assets";
-
-import { Title, Touchable, Input } from "../../components";
+import { Input } from "../../components";
 import { Formik, FormikHelpers } from "formik";
-import { DoctorSchema } from "./schemas";
+import { DoctorSchema, SignupDoctorValues, SignupValues } from "./schemas";
+interface SignupNextProps {
+  previousValues: SignupValues;
+}
+const SingunpDoctor: React.FC<SignupNextProps> = () => {
+  const initialValues: SignupDoctorValues = { firstName: "", lastName: "", address: "", phone: "" };
 
-import { InferType } from "yup";
-
-type SignupValues = InferType<typeof DoctorSchema>;
-
-const SingunpDoctor: React.FC = () => {
-  const initialValues: SignupValues = { firstName: "", lastName: "", address: "", phone: "" };
-
-  function onSubmit(values: SignupValues, { setSubmitting }: FormikHelpers<SignupValues>) {
+  function onSubmit(values: SignupDoctorValues, { setSubmitting }: FormikHelpers<SignupDoctorValues>) {
     console.log(values);
   }
 

@@ -1,21 +1,19 @@
-import { Sessions } from "../../components/SessionPicker";
-import { IUser, IPatient, IDoctor } from "../../../../../@types";
-import { combineReducers } from "redux";
+import { combineReducers, Action } from "redux";
 import user from "./userReducer";
 import patient from "./patientReducer";
 import doctor from "./doctorReducer";
 import sessions from "./sessionsReducer";
+import { ThunkAction } from "redux-thunk";
 
-export interface RootState {
-  user: IUser;
-  patient: IPatient;
-  doctor: IDoctor;
-  sessions: Sessions;
-}
+export type RootState = ReturnType<typeof rootReducer>;
 
-export default combineReducers({
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
+
+const rootReducer = combineReducers({
   user,
   patient,
   doctor,
-  sessions
-})
+  sessions,
+});
+
+export default rootReducer;

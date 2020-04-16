@@ -1,7 +1,8 @@
 import * as Yup from "yup";
+
 export const SignupSchema = Yup.object()
   .shape({
-    userName: Yup.string().email("Veuillez entrer un email valide").required("Ce champs est obligatoire"),
+    username: Yup.string().email("Veuillez entrer un email valide").required("Ce champs est obligatoire"),
     password: Yup.string().min(2, "Trop cours!").max(50, "Trops Long!").required("Ce champs est obligatoire"),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password")], "Les mots de passe ne correspondent pas")
@@ -36,3 +37,13 @@ export const PatientSchema = Yup.object()
     lastName: lastNameSchema,
   })
   .required("Ce champs est obligatoire");
+
+export type SignupDoctorValues = Yup.InferType<typeof DoctorSchema>;
+
+export type SignupPatientValues = Yup.InferType<typeof PatientSchema>;
+
+export type SignupValues = Yup.InferType<typeof SignupSchema>;
+
+export interface SignupBody extends SignupValues {
+  profile: SignupDoctorValues | SignupPatientValues;
+}
