@@ -63,7 +63,7 @@ const Login: React.FC = () => {
           )}
         </Formik>
         <Text style={styles.signupText}>
-          {"Vous avez pas de compte ?  "}
+          {"Vous n'avez pas de compte ?  "}
           <Text
             onPress={() => {
               navigate(routes.signUp);
