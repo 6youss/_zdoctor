@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Alert, View } from "react-native";
+import { Text, View } from "react-native";
 
 import { ScreenContainer, Touchable, Avatar } from "../../components";
 

@@ -19,18 +19,25 @@ const NotificationHandler: React.FC = () => {
     let unsubscribe: () => void = firebase.messaging().onMessage(notificationHandler);
 
     async function setupNotifications() {
-      const granted = await requestPermission();
-      if (granted) {
-        // await registerAppWithFCM();
-        const fcmToken = await firebase.messaging().getToken();
-        await postDevice(accessToken, fcmToken, Platform.OS);
-        console.log("added new device with", { fcmToken });
-      }
+      await turnOnNotification();
+      // await registerAppWithFCM();
+      const fcmToken = await firebase.messaging().getToken();
+      await postDevice(accessToken, fcmToken, Platform.OS);
+      console.log("added new device with", { fcmToken });
     }
     setupNotifications();
 
     return unsubscribe;
   }, []);
+
+  const turnOnNotification = async () => {
+    try {
+      await firebase.messaging().requestPermission();
+      // send to server
+    } catch (err) {
+      if (err.code === "messaging/token-unsubscribe-failed") turnOnNotification();
+    }
+  };
 
   async function requestPermission(): Promise<boolean> {
     try {
