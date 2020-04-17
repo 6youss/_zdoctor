@@ -34,6 +34,7 @@ export function login(username: string, password: string): AppThunk<Promise<void
         type: UserActionTypes.SIGN_IN_REJECTED,
         error: error,
       });
+      throw new Error(error.message);
     }
   };
 }

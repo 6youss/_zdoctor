@@ -6,7 +6,7 @@ export async function fetchDoctorByPhone(phone: string): Promise<IDoctor> {
   if (res.ok) {
     return (await res.json()).doctor;
   }
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }
 
 export async function patchDoctor(
@@ -25,5 +25,5 @@ export async function patchDoctor(
   if (res.ok) {
     return (await res.json()).doctor;
   }
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }

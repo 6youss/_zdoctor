@@ -50,7 +50,7 @@ const Singunp: React.FC = () => {
               <Title> Créer votre compte </Title>
 
               {step === 1 ? (
-                <View>
+                <View style={{ width: "100%", maxWidth: 400 }}>
                   <View style={{ marginTop: 20, flexDirection: "row", justifyContent: "flex-start" }}>
                     <Text style={{ fontSize: 20, fontWeight: "100", color: Colors.whiteTransparent }}>
                       {"Vous êtes ?  "}

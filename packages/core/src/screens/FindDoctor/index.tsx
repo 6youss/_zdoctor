@@ -40,7 +40,7 @@ const FindDoctor: React.FC = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      alert("Oops!", "Vérifier le numéro de téléphone et que vous êtes bien connecté à internet");
+      alert("Oops!", "Docteur non trouvé, Vérifier le numéro de téléphone.");
       console.log(error);
     }
   }
@@ -53,7 +53,6 @@ const FindDoctor: React.FC = () => {
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
               <Text style={{ color: Colors.white }}>
                 <Text style={{ fontWeight: "100" }}>{foundDoctor ? `Médecin trouvé !` : `Trouvez votre médecin`}</Text>
-                {/* {`${patient.firstName} ${patient.lastName}`} */}
               </Text>
               <Touchable
                 borderRadius={30}
@@ -94,15 +93,6 @@ const FindDoctor: React.FC = () => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View>
                 <Image style={styles.doctorIllustration} source={doctorIllustration} />
-                {/* <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 15,
-                    color: Colors.darkGray,
-                  }}
-                >
-                  Trouvez votre médecin
-                </Text> */}
               </View>
             </TouchableWithoutFeedback>
           </>

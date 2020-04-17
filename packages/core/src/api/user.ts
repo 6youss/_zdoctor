@@ -13,8 +13,7 @@ export async function postLogin(username: string, password: string): Promise<IUs
   if (res.ok) {
     return await res.json();
   }
-
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }
 
 export async function postSignup(body: SignupBody): Promise<{ message: string }> {
@@ -29,7 +28,7 @@ export async function postSignup(body: SignupBody): Promise<{ message: string }>
     return await res.json();
   }
 
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }
 
 export async function getUser(accessToken: string | undefined): Promise<IUserProfile> {
@@ -41,7 +40,7 @@ export async function getUser(accessToken: string | undefined): Promise<IUserPro
   if (res.ok) {
     return await res.json();
   }
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }
 
 export async function postDevice(accessToken: string | undefined, fcmToken: string, platform: string): Promise<any> {
@@ -57,5 +56,5 @@ export async function postDevice(accessToken: string | undefined, fcmToken: stri
     return await res.json();
   }
 
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }

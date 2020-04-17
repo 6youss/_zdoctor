@@ -5,20 +5,34 @@ import styles from "./styles";
 import { Input } from "../../components";
 import { Formik, FormikHelpers } from "formik";
 import { DoctorSchema, SignupDoctorValues, SignupValues } from "./schemas";
+import { postSignup } from "../../api/user";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux";
+import { login } from "../../redux/actions/userActions";
+import { useAlert } from "../../components/Alert";
 interface SignupNextProps {
   previousValues: SignupValues;
 }
-const SingunpDoctor: React.FC<SignupNextProps> = () => {
+const SingunpDoctor: React.FC<SignupNextProps> = ({ previousValues }) => {
   const initialValues: SignupDoctorValues = { firstName: "", lastName: "", address: "", phone: "" };
-
+  const dispatch = useDispatch<AppDispatch>();
+  const alert = useAlert();
   function onSubmit(values: SignupDoctorValues, { setSubmitting }: FormikHelpers<SignupDoctorValues>) {
-    console.log(values);
+    setSubmitting(true);
+    postSignup({ ...previousValues, profile: values })
+      .then(async (res) => {
+        await dispatch(login(previousValues.username, previousValues.password));
+      })
+      .catch((err) => {
+        alert("Erreur", err.message);
+        setSubmitting(false);
+      });
   }
 
   return (
     <Formik validationSchema={DoctorSchema} initialValues={initialValues} onSubmit={onSubmit}>
       {({ handleChange, handleSubmit, values, errors, isSubmitting }) => (
-        <View>
+        <>
           <Input
             value={values.firstName}
             onChangeText={handleChange("firstName")}
@@ -35,6 +49,22 @@ const SingunpDoctor: React.FC<SignupNextProps> = () => {
             returnKeyType="next"
             error={errors.lastName}
           />
+          <Input
+            value={values.phone}
+            onChangeText={handleChange("phone")}
+            style={styles.loginInput}
+            placeholder="Téléphone*"
+            returnKeyType="next"
+            error={errors.phone}
+          />
+          <Input
+            value={values.address}
+            onChangeText={handleChange("address")}
+            style={styles.loginInput}
+            placeholder="Addresse*"
+            returnKeyType="next"
+            error={errors.address}
+          />
           <Button
             onPress={handleSubmit}
             text="S'iscrire"
@@ -42,7 +72,7 @@ const SingunpDoctor: React.FC<SignupNextProps> = () => {
             loading={isSubmitting}
             style={{ width: "100%", maxWidth: 400, marginTop: 40 }}
           />
-        </View>
+        </>
       )}
     </Formik>
   );

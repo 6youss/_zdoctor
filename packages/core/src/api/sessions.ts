@@ -7,7 +7,6 @@ export async function postSession(
   doctorId: string,
   date: Date
 ): Promise<ISession> {
-  // console.log('posted session', date.toISOString());
   const res = await fetch(`${BASE_URL}/sessions/`, {
     method: "POST",
     headers: {
@@ -19,7 +18,7 @@ export async function postSession(
   if (res.ok) {
     return (await res.json()).session;
   }
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }
 
 export async function getDoctorSessions(accessToken: string | undefined, doctorId: string): Promise<Array<ISession>> {
@@ -33,7 +32,7 @@ export async function getDoctorSessions(accessToken: string | undefined, doctorI
   if (res.ok) {
     return (await res.json()).sessions;
   }
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }
 
 export async function getSessionDetails(accessToken: string | undefined, sessionId: string): Promise<ISessionDetails> {
@@ -46,5 +45,5 @@ export async function getSessionDetails(accessToken: string | undefined, session
   if (res.ok) {
     return (await res.json()).session;
   }
-  throw new Error(await res.text());
+  throw new Error((await res.json()).message);
 }
