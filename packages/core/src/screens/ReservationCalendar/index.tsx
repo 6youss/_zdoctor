@@ -63,7 +63,10 @@ const ReserveSession: React.FC = () => {
             postSession(accessToken, patient._id, doctor._id, time.date)
               .then((session) => {
                 fetchSessions();
-                alert("Success", `session prise avec succes`);
+                alert(
+                  "Succès !",
+                  `La session du ${time.date.toLocaleDateString("fr")} à ${time.timeString()} a été prise avec succès`
+                );
               })
               .catch((error) => {
                 alert("Oops!", error.message);

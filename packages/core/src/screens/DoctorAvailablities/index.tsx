@@ -79,7 +79,7 @@ const DoctorAvailablities: React.FC = () => {
     })
       .then((doctor) => {
         dispatch(setDoctorAction(doctor));
-        alert("success !", "disponibilités definies avec success");
+        alert("Succès !", "vous avez  definies votre disponibilités");
       })
       .catch((err) => {
         alert("Erreur", err.message);
