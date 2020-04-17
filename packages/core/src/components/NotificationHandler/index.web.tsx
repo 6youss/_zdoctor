@@ -24,7 +24,7 @@ const NotificationHandler: React.FC = () => {
         // await registerAppWithFCM();
         const fcmToken = await firebase.messaging().getToken();
         await postDevice(accessToken, fcmToken, Platform.OS);
-        console.log({ fcmToken });
+        console.log("added new device with", { fcmToken });
       }
     }
     setupNotifications();
@@ -45,7 +45,6 @@ const NotificationHandler: React.FC = () => {
     async function (message: any) {
       console.log("new message", message);
       if (message.data && message.data.type === NOTIFICATION_TYPES.NEW_DOCTOR_SESSION) {
-        console.log("received message");
         dispatch(searchedDoctorSessionsAction(await getDoctorSessions(accessToken, doctor._id)));
       }
     },

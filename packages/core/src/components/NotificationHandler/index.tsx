@@ -14,14 +14,13 @@ const NotificationHandler: React.FC = () => {
 
   React.useEffect(() => {
     let unsubscribe: () => void = messaging().onMessage(notificationHandler);
-
     async function setupNotifications() {
       const granted = await requestPermission();
       if (granted) {
         await registerAppWithFCM();
         const fcmToken = await messaging().getToken();
         await postDevice(accessToken, fcmToken, Platform.OS);
-        //console.log({fcmToken});
+        console.log("added new device with", { fcmToken });
       }
     }
     setupNotifications();
@@ -31,6 +30,7 @@ const NotificationHandler: React.FC = () => {
 
   const notificationHandler = React.useCallback(
     async function (message: FirebaseMessagingTypes.RemoteMessage) {
+      console.log("new message", message);
       if (message.data && message.data.type === NOTIFICATION_TYPES.NEW_DOCTOR_SESSION) {
         dispatch(searchedDoctorSessionsAction(await getDoctorSessions(accessToken, doctor._id)));
       }
@@ -41,9 +41,9 @@ const NotificationHandler: React.FC = () => {
   async function requestPermission(): Promise<boolean> {
     const granted = await messaging().requestPermission();
     if (granted) {
-      //console.log("User granted messaging permissions!");
+      console.log("User granted messaging permissions!");
     } else {
-      //console.log("User declined messaging permissions :(");
+      console.log("User declined messaging permissions :(");
     }
     return granted;
   }
