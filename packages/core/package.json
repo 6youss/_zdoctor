@@ -4,17 +4,21 @@
   "author": "Youcef ZAHARIOU",
   "license": "MIT",
   "scripts": {
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "clean": "shx rm -rf dist/*",
+    "clean:build": "tsc --build --clean"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-firebase/messaging": "^6.3.4",
+    "@react-navigation/drawer": "^5.5.0",
     "@react-navigation/native": "^5.1.4",
     "@react-navigation/stack": "^5.2.9",
     "express": "4.17.1",
     "formik": "^2.1.4",
     "react": "16.11.0",
     "react-native": "0.62.0",
+    "react-native-gesture-handler": "^1.6.1",
     "react-native-vector-icons": "^6.6.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",

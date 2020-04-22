@@ -16,6 +16,6 @@ export const useUnifiedNavigation = () => {
     navigation,
     params: route.params as any,
     goBack,
-    navigate
+    navigate,
   };
 };

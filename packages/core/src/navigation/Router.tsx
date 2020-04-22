@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator, StackNavigationOptions } from "@react-navigation/stack";
+import { createDrawerNavigator, DrawerNavigationOptions } from "@react-navigation/drawer";
 import {
   Splash,
   FindDoctor,
@@ -13,38 +13,37 @@ import {
   DoctorAvailablities,
 } from "../screens";
 import { RouterProps, routes } from "./types";
+// import SideMenu from "./SideMenu";
 
-const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const defaultOptions: StackNavigationOptions = {
-  headerShown: false,
-};
+const defaultOptions: DrawerNavigationOptions = {};
 
 const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
   return (
-    <Stack.Navigator screenOptions={defaultOptions}>
+    <Drawer.Navigator drawerContent={({ navigation }) => null} screenOptions={defaultOptions}>
       {isLoading ? (
-        <Stack.Screen name={routes.splash} component={Splash} />
+        <Drawer.Screen name={routes.splash} component={Splash} />
       ) : needAuth ? (
         <>
-          <Stack.Screen name={routes.login} component={Login} />
-          <Stack.Screen name={routes.signUp} component={Signup} />
+          <Drawer.Screen name={routes.login} component={Login} />
+          <Drawer.Screen name={routes.signUp} component={Signup} />
         </>
       ) : userType === "patient" ? (
         <>
-          <Stack.Screen name={routes.findDoctor} component={FindDoctor} />
-          <Stack.Screen name={routes.patientReservation} component={ReservationCalendar} />
-          <Stack.Screen name={routes.patientProfile} component={PatientProfile} />
+          <Drawer.Screen name={routes.findDoctor} component={FindDoctor} />
+          <Drawer.Screen name={routes.patientReservation} component={ReservationCalendar} />
+          <Drawer.Screen name={routes.patientProfile} component={PatientProfile} />
         </>
       ) : (
         <>
-          <Stack.Screen name={routes.doctorCalendar} component={DoctorCalendar} />
-          <Stack.Screen name={routes.doctorProfile} component={DoctorProfile} />
-          <Stack.Screen name={routes.doctorAvailibities} component={DoctorAvailablities} />
-          <Stack.Screen name={routes.doctorSession} component={SessionDetail} />
+          <Drawer.Screen name={routes.doctorCalendar} component={DoctorCalendar} />
+          <Drawer.Screen name={routes.doctorProfile} component={DoctorProfile} />
+          <Drawer.Screen name={routes.doctorAvailibities} component={DoctorAvailablities} />
+          <Drawer.Screen name={routes.doctorSession} component={SessionDetail} />
         </>
       )}
-    </Stack.Navigator>
+    </Drawer.Navigator>
   );
 };
 

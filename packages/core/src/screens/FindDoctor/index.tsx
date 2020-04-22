@@ -5,7 +5,6 @@ import { ScreenContainer, Input, Touchable, GoBack } from "../../components";
 import styles from "./styles";
 import { fetchDoctorByPhone } from "../../api/doctor";
 import Avatar from "../../components/Avatar";
-import Loader from "../../components/Loader";
 import FloatingButton from "../../components/FloatingButton";
 import doctorIllustration from "../../assets/doctorIllustration.jpg";
 import { Colors, isWeb } from "../../utils/values";
@@ -77,11 +76,7 @@ const FindDoctor: React.FC = () => {
           />
         </View>
 
-        {loading ? (
-          <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
-            <Loader />
-          </View>
-        ) : foundDoctor ? (
+        {foundDoctor ? (
           <FoundDoctor
             {...foundDoctor}
             onPress={() => {
@@ -89,17 +84,15 @@ const FindDoctor: React.FC = () => {
             }}
           />
         ) : (
-          <>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View>
-                <Image style={styles.doctorIllustration} source={doctorIllustration} />
-              </View>
-            </TouchableWithoutFeedback>
-          </>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View>
+              <Image style={styles.doctorIllustration} source={doctorIllustration} />
+            </View>
+          </TouchableWithoutFeedback>
         )}
         {!foundDoctor && (
           <View style={styles.pushToBottomCenter}>
-            <FloatingButton disabled={loading || !searchValue} onPress={findDoctor} />
+            <FloatingButton loading={loading} disabled={loading || !searchValue} onPress={findDoctor} />
           </View>
         )}
       </View>

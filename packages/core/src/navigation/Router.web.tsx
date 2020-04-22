@@ -13,6 +13,9 @@ import {
   DoctorAvailablities,
 } from "../screens";
 import { routes } from "./types";
+import { View } from "react-native";
+import SideMenu from "./SideMenu";
+import { screenWidth } from "../utils/dimentions";
 
 interface RouterProps {
   isLoading: boolean;
@@ -35,21 +38,28 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
             <Route exact path={routes.signUp} component={Signup} />
             <Redirect from="*" to={routes.login} />
           </>
-        ) : userType === "patient" ? (
-          <>
-            <Route exact path={routes.findDoctor} component={FindDoctor} />
-            <Route exact path={routes.patientReservation} component={ReservationCalendar} />
-            <Route exact path={routes.patientProfile} component={PatientProfile} />
-            <Redirect from="*" to={routes.findDoctor} />
-          </>
         ) : (
-          <>
-            <Route exact path={routes.doctorCalendar} component={DoctorCalendar} />
-            <Route exact path={routes.doctorProfile} component={DoctorProfile} />
-            <Route exact path={routes.doctorAvailibities} component={DoctorAvailablities} />
-            <Route exact path={routes.doctorSession} component={SessionDetail} />
-            <Redirect from="*" to={routes.doctorCalendar} />
-          </>
+          <View style={{ flexDirection: "row", flex: 1 }}>
+            <View style={{ width: 300 }}>
+              <SideMenu />
+            </View>
+            {userType === "patient" ? (
+              <>
+                <Route exact path={routes.findDoctor} component={FindDoctor} />
+                <Route exact path={routes.patientReservation} component={ReservationCalendar} />
+                <Route exact path={routes.patientProfile} component={PatientProfile} />
+                <Redirect from="*" to={routes.findDoctor} />
+              </>
+            ) : (
+              <>
+                <Route exact path={routes.doctorCalendar} component={DoctorCalendar} />
+                <Route exact path={routes.doctorProfile} component={DoctorProfile} />
+                <Route exact path={routes.doctorAvailibities} component={DoctorAvailablities} />
+                <Route exact path={routes.doctorSession} component={SessionDetail} />
+                <Redirect from="*" to={routes.doctorCalendar} />
+              </>
+            )}
+          </View>
         )}
       </Switch>
     </BrowserRouter>
