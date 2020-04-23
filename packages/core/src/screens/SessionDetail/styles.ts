@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../utils/values';
+import { StyleSheet } from "react-native";
+import { Colors } from "../../utils/globalStyles";
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    height: '100%',
+    height: "100%",
     backgroundColor: Colors.lightGray,
   },
 
@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   cardContainer: {
-    position: 'relative',
-    flexDirection: 'row',
+    position: "relative",
+    flexDirection: "row",
     padding: 20,
     backgroundColor: Colors.white,
     borderRadius: 20,
@@ -32,17 +32,17 @@ const styles = StyleSheet.create({
     marginStart: 20,
   },
   seeMore: {
-    position: 'absolute',
+    position: "absolute",
     color: Colors.primary,
     right: 20,
     bottom: 15,
   },
   pushToBottom: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   button: {
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: Colors.primary,
     padding: 8,
   },

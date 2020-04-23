@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, TextProps } from "react-native";
 import styles from "./styles";
-import { Colors } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 
 interface TitleProps extends TextProps {
   light?: boolean;

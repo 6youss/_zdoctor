@@ -39,10 +39,7 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
             <Redirect from="*" to={routes.login} />
           </>
         ) : (
-          <View style={{ flexDirection: "row", flex: 1 }}>
-            <View style={{ width: 300 }}>
-              <SideMenu />
-            </View>
+          <View style={{ flexDirection: "row-reverse", flex: 1 }}>
             {userType === "patient" ? (
               <>
                 <Route exact path={routes.findDoctor} component={FindDoctor} />
@@ -59,6 +56,9 @@ const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
                 <Redirect from="*" to={routes.doctorCalendar} />
               </>
             )}
+            <View style={{ width: 300 }}>
+              <SideMenu />
+            </View>
           </View>
         )}
       </Switch>

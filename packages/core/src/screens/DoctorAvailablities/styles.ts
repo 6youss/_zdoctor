@@ -1,16 +1,16 @@
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../utils/values';
+import { StyleSheet } from "react-native";
+import { Colors } from "../../utils/globalStyles";
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: Colors.lightGray,
   },
   sessionPickerContainer: {
     flexGrow: 1,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 20,
   },
   calendarTitle: {
@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
     color: Colors.darkGray,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 7,
   },

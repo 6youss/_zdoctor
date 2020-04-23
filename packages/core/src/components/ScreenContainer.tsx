@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, StatusBar, StatusBarProps, ViewProps } from "react-native";
-import { Colors, isWeb } from "../utils/values";
+import { isWeb } from "../utils/values";
+import { Colors } from "../utils/globalStyles";
 import { screenWidth } from "../utils/dimentions";
 
 interface ScreenContainerProps {

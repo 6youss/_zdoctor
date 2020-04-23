@@ -4,7 +4,7 @@ import logoWhite from "../../assets/logoWhite.png";
 import bgLight from "../../assets/bgLight.png";
 import styles from "./styles";
 import { ScreenContainer } from "../../components";
-import { Colors } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 
 const Splash = () => {
   return (

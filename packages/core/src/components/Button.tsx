@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
-import { Colors } from "../utils/values";
+import { Colors } from "../utils/globalStyles";
 import Touchable from "./Touchable";
 import Loader from "./Loader";
 

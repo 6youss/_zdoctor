@@ -7,7 +7,7 @@ import { ScreenContainer, Avatar, Touchable } from "../../components";
 import SessionPicker, { onHourPressFunction } from "../../components/SessionPicker";
 import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
-import { Colors, bigShadow, isWeb } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import { addDays } from "../../utils/zdate";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";

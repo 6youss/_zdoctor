@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors, mediumShadow } from "../../utils/values";
+import { Colors, mediumShadow } from "../../utils/globalStyles";
 
 const styles = StyleSheet.create({
   searchButton: {
@@ -10,12 +10,12 @@ const styles = StyleSheet.create({
     height: 80,
     backgroundColor: Colors.primaryLight,
     justifyContent: "center",
-    alignContent: "center"
+    alignContent: "center",
   },
   buttonText: {
     color: Colors.white,
     textAlign: "center",
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
 export default styles;

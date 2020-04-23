@@ -1,11 +1,11 @@
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../utils/values';
+import { StyleSheet } from "react-native";
+import { Colors } from "../../utils/globalStyles";
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     padding: 15,
     borderWidth: 1,
     borderColor: Colors.gray,

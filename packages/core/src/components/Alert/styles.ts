@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { screenWidth, screenHeight } from "../../utils/dimentions";
-import { Colors, mediumShadow } from "../../utils/values";
+import { Colors, mediumShadow } from "../../utils/globalStyles";
 const styles = StyleSheet.create({
   alertContainer: {
     position: "absolute",

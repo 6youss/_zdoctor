@@ -7,7 +7,8 @@ import { fetchDoctorByPhone } from "../../api/doctor";
 import Avatar from "../../components/Avatar";
 import FloatingButton from "../../components/FloatingButton";
 import doctorIllustration from "../../assets/doctorIllustration.jpg";
-import { Colors, isWeb } from "../../utils/values";
+import { isWeb } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import { doctorSelector, patientSelector } from "../../redux/selectors";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 

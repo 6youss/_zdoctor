@@ -11,7 +11,7 @@ import { doctorSelector, patientSelector, tokenSelector, sessionsSelector } from
 import { postSession, getDoctorSessions } from "../../api/sessions";
 import { addDays } from "../../utils/zdate";
 import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
-import { Colors, bigShadow, isWeb } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import GoBack from "../../components/GoBack";
 import { fetchDoctorByPhone } from "../../api/doctor";
 import { setDoctorAction } from "../../redux/actions/doctorActions";

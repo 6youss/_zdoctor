@@ -13,7 +13,7 @@ import {
   DoctorAvailablities,
 } from "../screens";
 import { RouterProps, routes } from "./types";
-// import SideMenu from "./SideMenu";
+import SideMenu from "./SideMenu";
 
 const Drawer = createDrawerNavigator();
 
@@ -21,7 +21,7 @@ const defaultOptions: DrawerNavigationOptions = {};
 
 const Router: React.FC<RouterProps> = ({ userType, isLoading, needAuth }) => {
   return (
-    <Drawer.Navigator drawerContent={({ navigation }) => null} screenOptions={defaultOptions}>
+    <Drawer.Navigator drawerContent={(props) => <SideMenu {...props} />} screenOptions={defaultOptions}>
       {isLoading ? (
         <Drawer.Screen name={routes.splash} component={Splash} />
       ) : needAuth ? (

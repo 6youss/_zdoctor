@@ -4,7 +4,7 @@ import styles from "./styles";
 import { useSelector, useDispatch } from "react-redux";
 import { doctorSelector } from "../../redux/selectors";
 import { ScreenContainer, Avatar } from "../../components";
-import { Colors, isWeb } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import GoBack from "../../components/GoBack";
 import Button from "../../components/Button";
 import { signOutAction } from "../../redux/actions/userActions";
@@ -35,7 +35,6 @@ const DoctorProfile: React.FC = () => {
           padding: 20,
           paddingBottom: 50,
           position: "relative",
-
           marginHorizontal: 20,
           elevation: 40,
         }}

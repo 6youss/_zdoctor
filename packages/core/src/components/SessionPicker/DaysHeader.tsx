@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Colors } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import { getDayName, getMonthName } from "../../utils/zdate";
 import Arrow from "./Arrow";
 import Touchable from "../Touchable";

@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import Touchable from "./Touchable";
-import { Colors } from "../utils/globalStyles";
-import { MaterialIcons } from "../libs/vector-icons";
+import Touchable from "../Touchable";
+import { Colors } from "../../utils/globalStyles";
+import { MaterialIcons } from "../../libs/vector-icons";
 
-const GoBack: React.FC<{ color?: string; onPress: () => void }> = ({ children, onPress, color = Colors.primary }) => {
+const AppHeader: React.FC<{ color?: string; onPress: () => void }> = ({
+  children,
+  onPress,
+  color = Colors.primary,
+}) => {
   return (
     <View
       style={{
@@ -20,7 +24,7 @@ const GoBack: React.FC<{ color?: string; onPress: () => void }> = ({ children, o
     </View>
   );
 };
-export default GoBack;
+export default AppHeader;
 
 const styles = StyleSheet.create({
   goBack: {

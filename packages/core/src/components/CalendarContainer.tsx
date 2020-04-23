@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Colors, bigShadow } from "../utils/values";
+import { Colors, bigShadow } from "../utils/globalStyles";
 
 const styles = StyleSheet.create({
   sessionPickerContainer: {

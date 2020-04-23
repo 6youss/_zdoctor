@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors, bigShadow } from "../../utils/values";
+import { Colors, bigShadow } from "../../utils/globalStyles";
 import { screenHeight } from "../../utils/dimentions";
 
 const styles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import React from "react";
-import { Colors } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import styles from "./styles";
 import Touchable, { TouchableProps } from "../Touchable";
 import { MaterialIcons } from "../../libs/vector-icons";

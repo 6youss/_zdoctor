@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 
 const styles = StyleSheet.create({
   defaultTitleStyles: {

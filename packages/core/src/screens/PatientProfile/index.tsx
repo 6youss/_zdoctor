@@ -3,7 +3,7 @@ import { View, Text, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { patientSelector } from "../../redux/selectors";
 import { ScreenContainer, Avatar } from "../../components";
-import { Colors, bigShadow } from "../../utils/values";
+import { Colors, bigShadow } from "../../utils/globalStyles";
 import GoBack from "../../components/GoBack";
 import Button from "../../components/Button";
 import { signOutAction } from "../../redux/actions/userActions";
@@ -35,7 +35,7 @@ const PatientProfile: React.FC = () => {
           paddingBottom: 50,
           position: "relative",
           marginHorizontal: 20,
-          ...bigShadow
+          ...bigShadow,
         }}
       >
         <View style={{ alignItems: "center" }}>
@@ -44,7 +44,7 @@ const PatientProfile: React.FC = () => {
             style={{
               color: Colors.darkGray,
               fontWeight: "bold",
-              margin: 7
+              margin: 7,
             }}
           >{`${patient.firstName} ${patient.lastName}`}</Text>
         </View>

@@ -3,7 +3,7 @@ import { View, Image, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { ScreenContainer, Input } from "../../components";
 import Button from "../../components/Button";
-import { Colors } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import styles from "./styles";
 import { useAlert } from "../../components/Alert";
 import { logoWhite } from "../../assets";

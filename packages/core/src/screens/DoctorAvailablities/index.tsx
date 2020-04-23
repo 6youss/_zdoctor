@@ -8,7 +8,8 @@ import { ScreenContainer, Avatar, Touchable, Button, GoBack } from "../../compon
 import SessionPicker, { onHourPressFunction, DEFAULT_SESSION_DURATION } from "../../components/SessionPicker";
 import { searchedDoctorSessionsAction } from "../../redux/actions/sessionsActions";
 import { getDoctorSessions } from "../../api/sessions";
-import { Colors, isWeb } from "../../utils/values";
+import { isWeb } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import { addDays, addMinutes, isDateInRange } from "../../utils/zdate";
 import { IDoctor } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";

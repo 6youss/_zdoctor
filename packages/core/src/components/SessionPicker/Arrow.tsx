@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Touchable } from "..";
-import { Colors } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import { MaterialIcons } from "../../libs/vector-icons";
 
 const arrowStyles = StyleSheet.create({

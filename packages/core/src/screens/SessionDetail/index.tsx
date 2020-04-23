@@ -7,7 +7,7 @@ import { ScreenContainer, Avatar, GoBack, Button } from "../../components";
 import { getSessionDetails } from "../../api/sessions";
 
 import defaultProfile from "../../assets/defaultProfile.jpg";
-import { Colors } from "../../utils/values";
+import { Colors } from "../../utils/globalStyles";
 import { ISessionDetails } from "../../../../../@types";
 import { useUnifiedNavigation } from "../../navigation/useUnifiedNavigation";
 import { useAlert } from "../../components/Alert";
