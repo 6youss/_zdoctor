@@ -31,7 +31,7 @@ const SingunpDoctor: React.FC<SignupNextProps> = ({ previousValues }) => {
 
   return (
     <Formik validationSchema={DoctorSchema} initialValues={initialValues} onSubmit={onSubmit}>
-      {({ handleChange, handleSubmit, values, errors, isSubmitting }) => (
+      {({ handleChange, handleSubmit, values, errors, touched, isSubmitting }) => (
         <>
           <Input
             value={values.firstName}
@@ -39,7 +39,7 @@ const SingunpDoctor: React.FC<SignupNextProps> = ({ previousValues }) => {
             style={styles.loginInput}
             placeholder="Prénom*"
             returnKeyType="next"
-            error={errors.firstName}
+            error={touched.firstName && errors.firstName ? errors.firstName : undefined}
           />
           <Input
             value={values.lastName}
@@ -47,7 +47,7 @@ const SingunpDoctor: React.FC<SignupNextProps> = ({ previousValues }) => {
             style={styles.loginInput}
             placeholder="Nom*"
             returnKeyType="next"
-            error={errors.lastName}
+            error={touched.lastName && errors.lastName ? errors.lastName : undefined}
           />
           <Input
             value={values.phone}
@@ -55,7 +55,7 @@ const SingunpDoctor: React.FC<SignupNextProps> = ({ previousValues }) => {
             style={styles.loginInput}
             placeholder="Téléphone*"
             returnKeyType="next"
-            error={errors.phone}
+            error={touched.phone && errors.phone ? errors.phone : undefined}
           />
           <Input
             value={values.address}
@@ -63,7 +63,7 @@ const SingunpDoctor: React.FC<SignupNextProps> = ({ previousValues }) => {
             style={styles.loginInput}
             placeholder="Addresse*"
             returnKeyType="next"
-            error={errors.address}
+            error={touched.address && errors.address ? errors.address : undefined}
           />
           <Button
             onPress={handleSubmit}

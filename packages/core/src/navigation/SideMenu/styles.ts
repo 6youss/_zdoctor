@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     ...mediumShadow,
   },
-
   headerCont: {
     height: 80,
     paddingHorizontal: 20,

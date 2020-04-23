@@ -49,14 +49,6 @@ const PatientProfile: React.FC = () => {
           >{`${patient.firstName} ${patient.lastName}`}</Text>
         </View>
         <View style={{ alignItems: "center", padding: 20 }}></View>
-        <View style={{ flex: 1, justifyContent: "flex-end", padding: 20 }}>
-          <Button
-            text="Se déconnecter"
-            onPress={() => {
-              dispatch(signOutAction());
-            }}
-          />
-        </View>
       </View>
     </ScreenContainer>
   );

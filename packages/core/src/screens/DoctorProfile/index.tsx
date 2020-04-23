@@ -53,23 +53,6 @@ const DoctorProfile: React.FC = () => {
         <View style={{ alignItems: "center", padding: 20 }}>
           <Text style={styles.phoneText}>{`${doctor.phone}`}</Text>
         </View>
-        <View style={{ flex: 1, justifyContent: "flex-end", padding: 20 }}>
-          <Button
-            color={Colors.lightGray}
-            light
-            text="Disponibilités"
-            style={{ marginBottom: 20 }}
-            onPress={() => {
-              navigate("/doctor/availablities");
-            }}
-          />
-          <Button
-            text="Se déconnecter"
-            onPress={() => {
-              dispatch(signOutAction());
-            }}
-          />
-        </View>
       </View>
     </ScreenContainer>
   );
