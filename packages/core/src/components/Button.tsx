@@ -26,7 +26,11 @@ const Button: React.FC<ButtonProps> = ({ onPress, light, text, loading = false, 
         color !== undefined && { backgroundColor: color },
       ]}
     >
-      {loading ? <Loader /> : <Text style={[styles.buttonText, light && { color: Colors.primary }]}>{text}</Text>}
+      {loading ? (
+        <Loader color={light ? Colors.primary : Colors.white} />
+      ) : (
+        <Text style={[styles.buttonText, light && { color: Colors.primary }]}>{text}</Text>
+      )}
     </Touchable>
   );
 };

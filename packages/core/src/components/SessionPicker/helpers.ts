@@ -42,7 +42,6 @@ export function splitDateRanges(ranges: Array<ClosedDateRange>, cutRange: Closed
   for (let i = 0; i < ranges.length; i++) {
     let currentRange = ranges[i];
     const status = rangeToRangeStatus(cutRange, currentRange);
-    console.log(status);
     switch (status) {
       case "IN":
         continue;
@@ -116,6 +115,19 @@ export function mergeDateRanges(
 function enoughTimeForSession(begining: string, end: string, sessionDurationMinutes: number): boolean {
   return (new Date(end).getTime() - new Date(begining).getTime()) / 1000 / 60 >= sessionDurationMinutes;
 }
+export function getSessionDuration(
+  sessionDurations: IDoctor["sessionDurations"],
+  date: Date,
+  defaultSessionDuration: number = DEFAULT_SESSION_DURATION
+): number {
+  let sessionDuration = defaultSessionDuration;
+  for (let sd of sessionDurations) {
+    if (isDateInRange(date, new Date(sd.from), sd.to ? new Date(sd.to) : null)) {
+      sessionDuration = sd.duration;
+    }
+  }
+  return sessionDuration;
+}
 
 export function getWorkHours(
   workingHours: IDoctor["workingHours"],
@@ -134,20 +146,6 @@ export function getWorkHours(
     }
   }
   return range;
-}
-
-export function getSessionDuration(
-  sessionDurations: IDoctor["sessionDurations"],
-  date: Date,
-  defaultSessionDuration: number = DEFAULT_SESSION_DURATION
-): number {
-  let sessionDuration = defaultSessionDuration;
-  for (let sd of sessionDurations) {
-    if (isDateInRange(date, new Date(sd.from), sd.to ? new Date(sd.to) : null)) {
-      sessionDuration = sd.duration;
-    }
-  }
-  return sessionDuration;
 }
 
 export function filterHours(

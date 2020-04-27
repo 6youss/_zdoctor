@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Alert } from "react-native";
+import { View, Text } from "react-native";
 import styles from "./styles";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -21,6 +21,8 @@ import { patchDoctor } from "../../api/doctor";
 import { setDoctorAction } from "../../redux/actions/doctorActions";
 
 const DoctorAvailablities: React.FC = () => {
+  const { navigate, goBack } = useUnifiedNavigation();
+  const alert = useAlert();
   const dispatch = useDispatch();
   const doctor = useSelector(doctorSelector);
   const accessToken = useSelector(tokenSelector);
@@ -29,8 +31,8 @@ const DoctorAvailablities: React.FC = () => {
   const [editedUnavailibities, setEditedUnavailibities] = React.useState<IDoctor["unavailablities"]>(
     JSON.parse(JSON.stringify(doctor.unavailablities))
   );
-  const { navigate, goBack } = useUnifiedNavigation();
-  const alert = useAlert();
+  const [isSubmiting, setIsSubmiting] = React.useState<boolean>(false);
+
   React.useEffect(() => {
     fetchSessions();
   }, []);
@@ -51,18 +53,38 @@ const DoctorAvailablities: React.FC = () => {
       from: time.dateString,
       to: addMinutes(time.date, duration - 1).toISOString(),
     };
-    console.log(editedUnavailibities);
+    // console.log(editedUnavailibities);
     let newEditedUnavailibities = [...editedUnavailibities];
     const allreadyUnvlbl = newEditedUnavailibities.findIndex((range) =>
       isDateInRange(time.date, new Date(range.from), new Date(range.to), false)
     );
-    console.log({ pressedRange, allreadyUnvlbl });
+    // console.log({ pressedRange, allreadyUnvlbl });
     if (allreadyUnvlbl > -1) {
       newEditedUnavailibities = splitDateRanges(newEditedUnavailibities, pressedRange);
     } else {
       newEditedUnavailibities.push(pressedRange);
     }
     setEditedUnavailibities(mergeDateRanges(newEditedUnavailibities, doctor.sessionDurations));
+  };
+
+  const handleDayPress = (date: Date) => {
+    const pressedRange = {
+      from: date.toISOString(),
+      to: addMinutes(date, 23 * 60 + 59).toISOString(),
+    };
+    let newEditedUnavailibities = [...editedUnavailibities];
+
+    const dayHasUnavailableHours = newEditedUnavailibities.findIndex(
+      (range) => pressedRange.from <= range.from && pressedRange.to >= range.to
+    );
+
+    if (dayHasUnavailableHours > -1) {
+      newEditedUnavailibities = splitDateRanges(newEditedUnavailibities, pressedRange);
+    } else {
+      newEditedUnavailibities.push(pressedRange);
+    }
+
+    setEditedUnavailibities(newEditedUnavailibities);
   };
 
   function handleRightPress() {
@@ -72,17 +94,18 @@ const DoctorAvailablities: React.FC = () => {
     setCurrentDay(addDays(currentDay, -3));
   }
 
-  // const unavailablitiesConcat = doctor.unavailablities.concat(editedUnavailibities);
-
   function submit() {
+    setIsSubmiting(true);
     patchDoctor(accessToken, doctor._id, {
       unavailablities: editedUnavailibities,
     })
       .then((doctor) => {
         dispatch(setDoctorAction(doctor));
         alert("Succès !", "vous avez  definies votre disponibilités");
+        setIsSubmiting(false);
       })
       .catch((err) => {
+        setIsSubmiting(false);
         alert("Erreur", err.message);
       });
   }
@@ -123,6 +146,7 @@ const DoctorAvailablities: React.FC = () => {
             workingHours={doctor.workingHours}
             sessionDurations={doctor.sessionDurations}
             onHourPress={handleHourPress}
+            onDayPress={handleDayPress}
             onArrowLeftPress={handleLeftPress}
             onArrowRightPress={handleRightPress}
             onRefresh={fetchSessions}
@@ -130,7 +154,7 @@ const DoctorAvailablities: React.FC = () => {
         </CalendarContainer>
       </View>
       <View style={{ flexDirection: "row-reverse", paddingHorizontal: isWeb ? "5%" : 0, paddingVertical: 20 }}>
-        <Button style={{ marginHorizontal: 20, width: 100 }} text="Confirmer" onPress={submit} />
+        <Button style={{ marginHorizontal: 20, width: 100 }} loading={isSubmiting} text="Confirmer" onPress={submit} />
       </View>
     </ScreenContainer>
   );

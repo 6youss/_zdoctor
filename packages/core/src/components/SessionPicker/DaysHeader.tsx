@@ -4,7 +4,7 @@ import { Colors } from "../../utils/globalStyles";
 import { getDayName, getMonthName } from "../../utils/zdate";
 import Arrow from "./Arrow";
 import Touchable from "../Touchable";
-import { SessionPickerProps, ZSessionsMap, DEFAULT_CURRENT_DAY } from ".";
+import { SessionPickerProps, ZSessionsMap, DEFAULT_CURRENT_DAY, ZSessions } from ".";
 
 export interface DaysHeaderProps {
   filteredHours: ZSessionsMap;
@@ -36,6 +36,16 @@ const DaysHeader: React.FC<DaysHeaderProps> = ({
   onArrowRightPress = () => {},
   onDayPress = () => {},
 }) => {
+  function isEmptyDay(sessions: ZSessions): boolean {
+    if (sessions.length === 0) return true;
+    let isempty = true;
+    for (let s of sessions) {
+      if (!s.unavailable) {
+        isempty = false;
+      }
+    }
+    return isempty;
+  }
   return (
     <View
       style={{
@@ -53,13 +63,13 @@ const DaysHeader: React.FC<DaysHeaderProps> = ({
       />
       {Object.keys(filteredHours).map((dateKey) => {
         const date = new Date(dateKey);
-        const emptyDay = filteredHours[dateKey].length === 0;
+        const emptyDay = isEmptyDay(filteredHours[dateKey]);
         return (
           <Touchable
+            key={dateKey + "-" + emptyDay}
             onPress={() => {
               onDayPress(date);
             }}
-            key={dateKey}
             style={{
               width: `${dayColumnWidth}%`,
               opacity: emptyDay ? 0.5 : 1,
