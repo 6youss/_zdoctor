@@ -33,7 +33,7 @@ const Login: React.FC = () => {
         <Image style={styles.loginLogo} resizeMode="contain" source={logoWhite} />
         <Formik validationSchema={SignInSchema} initialValues={initialValues} onSubmit={onSubmit}>
           {({ handleChange, handleSubmit, values, errors, touched }) => (
-            <>
+            <View style={{ width: "100%", maxWidth: 400 }}>
               <Input
                 value={values.username}
                 onChangeText={handleChange("username")}
@@ -59,7 +59,7 @@ const Login: React.FC = () => {
                 loading={loading}
                 style={{ width: "100%", maxWidth: 400, marginTop: 30 }}
               />
-            </>
+            </View>
           )}
         </Formik>
         <Text style={styles.signupText}>
