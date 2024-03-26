@@ -14,7 +14,7 @@
     "@react-navigation/drawer": "^5.5.0",
     "@react-navigation/native": "^5.1.4",
     "@react-navigation/stack": "^5.2.9",
-    "express": "4.17.1",
+    "express": "4.19.2",
     "formik": "^2.1.4",
     "react": "16.11.0",
     "react-native": "0.62.0",
